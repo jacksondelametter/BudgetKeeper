@@ -16,11 +16,13 @@ public class Main extends Application{
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Budget Keeper");
         FXMLLoader loader = new FXMLLoader();
-        URL url = new File("/home/jackson/Documents/BudgetKeeper/gui/MainView.fxml").toURI().toURL();
+        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/MainView.fxml").toURI().toURL();
         loader.setLocation(url);
-        VBox vbox = loader.<VBox>load();
+        VBox vbox = loader.load();
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
+        primaryStage.setHeight(700);
+        primaryStage.setWidth(700);
         primaryStage.show();
     }
 
