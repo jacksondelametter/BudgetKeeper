@@ -25,7 +25,7 @@
         </Menu>
     </MenuBar>
     <HBox>
-        <ChoiceBox fx:id="month_choice_box"/>
-        <ChoiceBox fx:id="year_choice_box"/>
+        <ChoiceBox fx:id="monthChoiceBox"/>
+        <ChoiceBox fx:id="yearChoiceBox"/>
     </HBox>
 </VBox>
