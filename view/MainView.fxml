@@ -5,10 +5,10 @@
 <?import javafx.scene.control.Label?>
 
 <?import javafx.scene.control.MenuItem?>
-<VBox>
+<VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewController">
     <MenuBar>
         <Menu text="Add">
-            <MenuItem text="Income"/>
+            <MenuItem fx:id="menu_item" onAction="#addIncomePressed" text="Income"/>
         </Menu>
     </MenuBar>
 </VBox>
