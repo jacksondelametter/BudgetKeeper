@@ -8,7 +8,17 @@
 <VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewController">
     <MenuBar>
         <Menu text="Add">
-            <MenuItem fx:id="menu_item" onAction="#addIncomePressed" text="Income"/>
+            <MenuItem fx:id="add_income" onAction="#addIncomePressed" text="Income"/>
+            <MenuItem fx:id="add_receipt" onAction="#addReceiptPressed" text="Receipt"/>
+            <MenuItem fx:id="add_category" onAction="#addCategoryPressed" text="Category"/>
+        </Menu>
+        <Menu text="Delete">
+            <MenuItem fx:id="delete_income" onAction="#deleteIncomePressed" text="Income"/>
+            <MenuItem fx:id="delete_receipt" onAction="#deleteReceiptPressed" text="Receipt"/>
+            <MenuItem fx:id="delete_category" onAction="#deleteCategoryPressed" text="Category"/>
+        </Menu>
+        <Menu text="Stats">
+            <MenuItem fx:id="print_stats" onAction="#printStatsPressed" text="Print Stats"/>
         </Menu>
     </MenuBar>
 </VBox>
