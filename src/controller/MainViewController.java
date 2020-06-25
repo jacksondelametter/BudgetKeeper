@@ -3,11 +3,14 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,7 +63,14 @@ public class MainViewController {
 
     @FXML
     public void addIncomePressed(Event e){
-        System.out.println("Add Income Pressed");
+        Stage addIncomeState = new Stage();
+        addIncomeState.setX(500);
+        addIncomeState.setY(500);
+        addIncomeState.setHeight(300);
+        addIncomeState.setWidth(500);
+        Scene scene = new Scene();
+        FXMLLoader loader = new FXMLLoader();
+        addIncomeState.show();
     }
 
     @FXML
