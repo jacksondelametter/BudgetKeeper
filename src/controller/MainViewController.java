@@ -58,12 +58,12 @@ public class MainViewController {
 
     private void connectToDatabase() {
         String url = "jdbc:sqlite:/home/jackson/Documents/BudgetKeeper/database/BudgetKeeper.db";
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement()) {
             DatabaseMetaData meta = conn.getMetaData();
             System.out.println("Driver name is " + meta.getDriverName());
             String statement = "CREATE TABLE IF NOT EXISTS receipts (amount DOUBLE);";
             String insertStatement = "INSERT INTO receipts (amount) VALUES (100);";
-            Statement stmt = conn.createStatement();
             stmt.execute(statement);
             stmt.execute(insertStatement);
         } catch (Exception e) {
