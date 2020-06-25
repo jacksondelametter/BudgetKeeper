@@ -9,6 +9,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -52,10 +56,26 @@ public class MainViewController {
 
     }
 
+    private void connectToDatabase() {
+        String url = "jdbc:sqlite:/home/jackson/Documents/BudgetKeeper/database/BudgetKeeper.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            DatabaseMetaData meta = conn.getMetaData();
+            System.out.println("Driver name is " + meta.getDriverName());
+            String statement = "CREATE TABLE IF NOT EXISTS receipts (amount DOUBLE);";
+            String insertStatement = "INSERT INTO receipts (amount) VALUES (100);";
+            Statement stmt = conn.createStatement();
+            stmt.execute(statement);
+            stmt.execute(insertStatement);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
     @FXML
     public void initialize() {
         setupMonthYearChoiceBox();
         setupBudgetPieChart();
+        connectToDatabase();
     }
 
     @FXML
