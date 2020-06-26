@@ -7,11 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -62,20 +64,19 @@ public class MainViewController {
     }
 
     @FXML
-    public void addIncomePressed(Event e){
-        Stage addIncomeState = new Stage();
-        addIncomeState.setX(500);
-        addIncomeState.setY(500);
-        addIncomeState.setHeight(300);
-        addIncomeState.setWidth(500);
-        Scene scene = new Scene();
+    public void addTransactionPressed(Event e) throws Exception{
+        Stage addTransactionStage = new Stage();
+        addTransactionStage.setTitle("Add Transaction");
+        addTransactionStage.setX(500);
+        addTransactionStage.setY(500);
+        addTransactionStage.setHeight(300);
+        addTransactionStage.setWidth(500);
         FXMLLoader loader = new FXMLLoader();
-        addIncomeState.show();
-    }
-
-    @FXML
-    public void addReceiptPressed(Event e){
-        System.out.println("Add Receipt Pressed");
+        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/addTransaction.fxml").toURI().toURL();
+        VBox addIncome = loader.load(url);
+        Scene scene = new Scene(addIncome);
+        addTransactionStage.setScene(scene);
+        addTransactionStage.show();
     }
 
     @FXML
@@ -84,13 +85,8 @@ public class MainViewController {
     }
 
     @FXML
-    public void deleteIncomePressed(Event e) {
+    public void deleteTransactionPressed(Event e) {
         System.out.println("Delete Income Pressed");
-    }
-
-    @FXML
-    public void deleteReceiptPressed(Event e) {
-        System.out.println("Delete Receipt Pressed");
     }
 
     @FXML

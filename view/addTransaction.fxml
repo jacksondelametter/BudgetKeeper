@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<VBox xmlns:fx="add_income_receipt_vbox" spacing="20">
+    <HBox>
+        <RadioButton text="Income">
+
+        </RadioButton>
+        <RadioButton text="Receipt">
+
+        </RadioButton>
+    </HBox>
+    <HBox alignment="CENTER">
+        <Label text="Choose Date">
+            <padding>
+                <Insets topRightBottomLeft="10"/>
+            </padding>
+        </Label>
+        <DatePicker fx:id="datePicker"/>
+    </HBox>
+    <TextField fx:id="enterDescription" promptText="Enter Description"/>
+    <TextField fx:id="enterAmount" promptText="Enter amount"/>
+    <Button fx:id="addButton" text="Add"/>
+</VBox>
