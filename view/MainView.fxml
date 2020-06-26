@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.TableView?>
-<VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewController">
+<VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewVC">
     <MenuBar>
         <Menu text="Add">
             <MenuItem fx:id="addTransaction" onAction="#addTransactionPressed" text="Transaction"/>

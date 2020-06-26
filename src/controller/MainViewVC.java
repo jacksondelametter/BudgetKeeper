@@ -17,7 +17,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class MainViewController {
+public class MainViewVC {
 
     @FXML
     public ChoiceBox monthChoiceBox;
@@ -72,7 +72,7 @@ public class MainViewController {
         addTransactionStage.setHeight(300);
         addTransactionStage.setWidth(500);
         FXMLLoader loader = new FXMLLoader();
-        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/addTransaction.fxml").toURI().toURL();
+        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/AddTransaction.fxml").toURI().toURL();
         VBox addIncome = loader.load(url);
         Scene scene = new Scene(addIncome);
         addTransactionStage.setScene(scene);
