@@ -87,6 +87,7 @@ public class MainViewVC {
         addCategoryStage.setHeight(300);
         addCategoryStage.setWidth(500);
         addCategoryStage.setTitle("Add Category");
+        Scene scene = new Scene();
         addCategoryStage.showAndWait();
     }
 
