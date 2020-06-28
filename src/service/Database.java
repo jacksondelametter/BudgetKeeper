@@ -21,7 +21,7 @@ public class Database {
              Statement stmt = conn.createStatement()) {
             String transactionStatement = "CREATE TABLE IF NOT EXISTS transactions (date DATE, category STRING, " +
                     "description STRING, amount DOUBLE);";
-            String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING, type STRING);";
+            String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING NOT NULL PRIMARY KEY, type STRING);";
             stmt.execute(transactionStatement);
             stmt.execute(categoryStatement);
         } catch (Exception e) {
@@ -33,8 +33,8 @@ public class Database {
         String categoryStmt = "INSERT INTO categories (name, type) VALUES (?, ?);";
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(categoryStmt)) {
-            stmt.setString(0, category.getName());
-            stmt.setString(1, category.getType());
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getType());
             stmt.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -63,11 +63,11 @@ public class Database {
                 "VALUES (?, ?, ?, ?, ?);";
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(transactionStmt)) {
-            stmt.setDate(0, java.sql.Date.valueOf(transaction.getDate().toString()));
-            stmt.setString(1, transaction.getCategory());
-            stmt.setString(2, transaction.getDescription());
-            stmt.setDouble(3, transaction.getAmount());
-            stmt.setString(4, transaction.getType());
+            stmt.setDate(1, java.sql.Date.valueOf(transaction.getDate().toString()));
+            stmt.setString(2, transaction.getCategory());
+            stmt.setString(3, transaction.getDescription());
+            stmt.setDouble(4, transaction.getAmount());
+            stmt.setString(5, transaction.getType());
             stmt.executeUpdate();
 
         } catch (Exception e) {
