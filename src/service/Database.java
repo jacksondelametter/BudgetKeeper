@@ -24,7 +24,8 @@ public class Database {
     public static void addTransaction(Transaction transaction) {
         try (Connection conn = DriverManager.getConnection(dbUrl);
              Statement stmt = conn.createStatement()) {
-            String values = transaction.getDate().toString() + "," + transaction.getCategory() + ","
+            String values = transaction.getDate().toString() + "," +
+                    transaction.getType() + "," + transaction.getCategory() + ","
                     + transaction.getDescription() + "," + transaction.getAmount();
             String command = "INSERT ONTO transactions (date, category, description, amount)" +
                     "VALUES (" + values + ");";
@@ -43,10 +44,11 @@ public class Database {
             ResultSet results = stmt.executeQuery(query);
             while(results.next()) {
                 Date transactionDate = results.getDate(0);
-                String category = results.getString(1);
-                String description = results.getString(2);
-                Double amount = results.getDouble(3);
-                Transaction transaction = new Transaction(transactionDate, category, description, amount);
+                String transactionType = results.getString(1);
+                String category = results.getString(2);
+                String description = results.getString(3);
+                Double amount = results.getDouble(4);
+                Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount);
                 transactions.add(transaction);
             }
         } catch (Exception e) {

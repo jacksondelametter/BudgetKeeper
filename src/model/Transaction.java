@@ -5,12 +5,14 @@ import java.util.Date;
 public class Transaction {
 
     private Date date;
+    private String type;
     private String category;
     private double amount;
     private String description;
 
-    public Transaction(Date date, String category, String description, double amount) {
+    public Transaction(Date date, String type, String category, String description, double amount) {
         this.date = date;
+        this.type = type;
         this.category = category;
         this.amount = amount;
         this.description = description;
@@ -22,6 +24,14 @@ public class Transaction {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCategory() {
