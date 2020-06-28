@@ -76,12 +76,18 @@ public class MainViewVC {
         VBox addIncome = loader.load(url);
         Scene scene = new Scene(addIncome);
         addTransactionStage.setScene(scene);
-        addTransactionStage.show();
+        addTransactionStage.showAndWait();
     }
 
     @FXML
     public void addCategoryPressed(Event e){
-        System.out.println("Add Category Pressed");
+        Stage addCategoryStage = new Stage();
+        addCategoryStage.setX(500);
+        addCategoryStage.setY(500);
+        addCategoryStage.setHeight(300);
+        addCategoryStage.setWidth(500);
+        addCategoryStage.setTitle("Add Category");
+        addCategoryStage.showAndWait();
     }
 
     @FXML
