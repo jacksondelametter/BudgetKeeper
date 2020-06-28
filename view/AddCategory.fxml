@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<VBox xmlns:fx="add_category_receipt_vbox" spacing="20" fx:controller="controller.AddCategoryVC">
+    <HBox>
+        <RadioButton text="Income" fx:id="incomeRadioButton">
+
+        </RadioButton>
+        <RadioButton text="Receipt" fx:id="receiptRadioButton">
+
+        </RadioButton>
+    </HBox>
+    <TextField fx:id="enterName" promptText="Enter Name"/>
+    <Button fx:id="addButton" text="Add" onAction="#addCategoryButtonPressed"/>
+</VBox>

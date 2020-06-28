@@ -63,6 +63,18 @@ public class MainViewVC {
         setupBudgetPieChart();
     }
 
+    private Scene getScene(String fxml) throws Exception {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL url = new File("/home/jackson/Documents/BudgetKeeper/view/" + fxml).toURI().toURL();
+            VBox vbox = loader.load(url);
+            return new Scene(vbox);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return null;
+    }
+
     @FXML
     public void addTransactionPressed(Event e) throws Exception{
         Stage addTransactionStage = new Stage();
@@ -71,23 +83,19 @@ public class MainViewVC {
         addTransactionStage.setY(500);
         addTransactionStage.setHeight(300);
         addTransactionStage.setWidth(500);
-        FXMLLoader loader = new FXMLLoader();
-        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/AddTransaction.fxml").toURI().toURL();
-        VBox addIncome = loader.load(url);
-        Scene scene = new Scene(addIncome);
-        addTransactionStage.setScene(scene);
+        addTransactionStage.setScene(getScene("AddTransaction.fxml"));
         addTransactionStage.showAndWait();
     }
 
     @FXML
-    public void addCategoryPressed(Event e){
+    public void addCategoryPressed(Event e) throws Exception{
         Stage addCategoryStage = new Stage();
         addCategoryStage.setX(500);
         addCategoryStage.setY(500);
         addCategoryStage.setHeight(300);
         addCategoryStage.setWidth(500);
         addCategoryStage.setTitle("Add Category");
-        Scene scene = new Scene();
+        addCategoryStage.setScene(getScene("AddCategory.fxml"));
         addCategoryStage.showAndWait();
     }
 
