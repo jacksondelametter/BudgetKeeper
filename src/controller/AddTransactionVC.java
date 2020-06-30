@@ -3,10 +3,12 @@ package controller;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import model.Category;
 import model.Transaction;
 import service.Database;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AddTransactionVC {
@@ -21,7 +23,7 @@ public class AddTransactionVC {
     public DatePicker datePicker;
 
     @FXML
-    public ChoiceBox categoryChoiceBox;
+    public ChoiceBox<String> categoryChoiceBox;
 
     @FXML
     public TextField enterDescription;
@@ -47,6 +49,25 @@ public class AddTransactionVC {
     public void initialize() {
         setupRadioButtons();
         setupDatePicker();
+    }
+
+    private void addCategoriesToChoiceBox(ArrayList<Category> categories) {
+        categoryChoiceBox.getItems().clear();
+        for(Category cat : categories) {
+            categoryChoiceBox.getItems().add(cat.getName());
+        }
+    }
+
+    @FXML
+    public void incomeRadioButtonPressed(Event e) {
+        ArrayList<Category> incomeCat = Database.getCategories("Income");
+        addCategoriesToChoiceBox(incomeCat);
+    }
+
+    @FXML
+    public void receiptRadioButtonPressed(Event e) {
+        ArrayList<Category> receiptCat = Database.getCategories("Receipt");
+        addCategoriesToChoiceBox(receiptCat);
     }
 
     @FXML

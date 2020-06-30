@@ -11,10 +11,10 @@
 <?import javafx.scene.control.RadioButton?>
 <VBox xmlns:fx="add_income_receipt_vbox" spacing="20" fx:controller="controller.AddTransactionVC">
     <HBox>
-        <RadioButton text="Income" fx:id="incomeRadioButton">
+        <RadioButton text="Income" fx:id="incomeRadioButton" onAction="#incomeRadioButtonPressed">
 
         </RadioButton>
-        <RadioButton text="Receipt" fx:id="receiptRadioButton">
+        <RadioButton text="Receipt" fx:id="receiptRadioButton" onAction="#receiptRadioButtonPressed">
 
         </RadioButton>
     </HBox>

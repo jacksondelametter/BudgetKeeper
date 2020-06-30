@@ -41,15 +41,16 @@ public class Database {
         }
     }
 
-    public static ArrayList<Category> getCategories() {
+    public static ArrayList<Category> getCategories(String categoryType) {
         ArrayList<Category> categories = new ArrayList<>();
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            String query = "SELECT * FROM categories;";
+            String query = String.format("SELECT * FROM categories WHERE type='%s';", categoryType);
+            //String query = "SELECT * FROM categories;";
             ResultSet results = stmt.executeQuery(query);
             while(results.next()) {
-                String name = results.getString(0);
-                String type  = results.getString(1);
+                String name = results.getString(1);
+                String type  = results.getString(2);
                 categories.add(new Category(name, type));
             }
         } catch (Exception e) {
