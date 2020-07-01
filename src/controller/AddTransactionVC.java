@@ -8,9 +8,9 @@ import model.Category;
 import model.Transaction;
 import service.Database;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
 public class AddTransactionVC {
@@ -89,7 +89,7 @@ public class AddTransactionVC {
             System.out.println(error.toString());
             return;
         }
-        Date date = new Date(datePicker.getValue().toEpochDay());
+        Date date = Date.valueOf(datePicker.getValue().toString());
         String category = categoryChoiceBox.getSelectionModel().getSelectedItem();
         RadioButton transactionTypeRadio = ((RadioButton) incomeReceiptToggle.getSelectedToggle());
         String type = transactionTypeRadio.getText();

@@ -5,7 +5,6 @@ import model.Transaction;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Database {
 
@@ -75,7 +74,7 @@ public class Database {
                 "VALUES (?, ?, ?, ?, ?, ?);";
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(transactionStmt)) {
-            stmt.setDate(1, new java.sql.Date(transaction.getDate().getTime()));
+            stmt.setDate(1, transaction.getDate());
             stmt.setString(2, transaction.getType());
             stmt.setString(3, transaction.getCategory());
             stmt.setString(4, transaction.getDescription());
