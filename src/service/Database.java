@@ -20,7 +20,7 @@ public class Database {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             String transactionStatement = "CREATE TABLE IF NOT EXISTS transactions (date DATE, category STRING, " +
-                    "description STRING, amount DOUBLE, type STRING);";
+                    "description STRING, amount DOUBLE, type STRING, id NOT NULL PRIMARY KEY);";
             String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING NOT NULL PRIMARY KEY, type STRING);";
             stmt.execute(transactionStatement);
             stmt.execute(categoryStatement);
@@ -71,8 +71,8 @@ public class Database {
     }
 
     public static void addTransaction(Transaction transaction) {
-        String transactionStmt = "INSERT INTO transactions (date, type, category, description, amount) " +
-                "VALUES (?, ?, ?, ?, ?);";
+        String transactionStmt = "INSERT INTO transactions (date, type, category, description, amount, id) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(transactionStmt)) {
             stmt.setDate(1, new java.sql.Date(transaction.getDate().getTime()));
@@ -80,6 +80,7 @@ public class Database {
             stmt.setString(3, transaction.getCategory());
             stmt.setString(4, transaction.getDescription());
             stmt.setDouble(5, transaction.getAmount());
+            stmt.setString(6, transaction.getId());
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -88,25 +89,39 @@ public class Database {
         }
     }
 
-    public static ArrayList<Transaction> getTransactions() {
+    public static ArrayList<Transaction> getTransactions(String type) {
+        String query = "SELECT * FROM transactions WHERE type=?;";
         ArrayList<Transaction> transactions = new ArrayList<>();
         try (Connection conn = connect();
-             Statement stmt = conn.createStatement()) {
-            String query = "SELECT * FROM transactions;";
-            ResultSet results = stmt.executeQuery(query);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, type);
+            ResultSet results = stmt.executeQuery();
             while(results.next()) {
                 Date transactionDate = results.getDate(1);
                 String transactionType = results.getString(2);
                 String category = results.getString(3);
                 String description = results.getString(4);
                 Double amount = results.getDouble(5);
-                Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount);
+                String id = results.getString(6);
+                Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount, id);
                 transactions.add(transaction);
             }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
         return transactions;
+    }
+
+    public static void deleteTransaction(Transaction tran) {
+        String deleteStatement = "DELETE FROM transactions WHERE id=?";
+        try (Connection conn = connect()){
+            PreparedStatement stmt = conn.prepareStatement(deleteStatement);
+            stmt.setString(1,tran.getId());
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
 }

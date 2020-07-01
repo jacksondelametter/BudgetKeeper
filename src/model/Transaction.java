@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Transaction {
 
@@ -9,13 +10,15 @@ public class Transaction {
     private String category;
     private double amount;
     private String description;
+    private String id;
 
-    public Transaction(Date date, String type, String category, String description, double amount) {
+    public Transaction(Date date, String type, String category, String description, double amount, String id) {
         this.date = date;
         this.type = type;
         this.category = category;
         this.amount = amount;
         this.description = description;
+        this.id = id;
     }
 
     public Date getDate() {
@@ -56,5 +59,13 @@ public class Transaction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

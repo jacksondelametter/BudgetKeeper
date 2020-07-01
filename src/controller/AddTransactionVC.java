@@ -11,6 +11,7 @@ import service.Database;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 public class AddTransactionVC {
 
@@ -92,8 +93,8 @@ public class AddTransactionVC {
         String category = categoryChoiceBox.getSelectionModel().getSelectedItem();
         RadioButton transactionTypeRadio = ((RadioButton) incomeReceiptToggle.getSelectedToggle());
         String type = transactionTypeRadio.getText();
-        System.out.println(type);
-        Transaction t = new Transaction(date, type, category, description, amountNum);
+        String id = UUID.randomUUID().toString();
+        Transaction t = new Transaction(date, type, category, description, amountNum, id);
         Database.addTransaction(t);
         Stage stage = (Stage) addButton.getScene().getWindow();
         stage.close();

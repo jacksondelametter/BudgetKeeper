@@ -107,7 +107,7 @@ public class MainViewVC {
         deleteTransactionPressed.setHeight(300);
         deleteTransactionPressed.setWidth(500);
         deleteTransactionPressed.setTitle("Add Category");
-        deleteTransactionPressed.setScene(getScene("AddCategory.fxml"));
+        deleteTransactionPressed.setScene(getScene("DeleteTransaction.fxml"));
         deleteTransactionPressed.showAndWait();
     }
 

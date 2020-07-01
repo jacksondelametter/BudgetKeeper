@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableView?>
-<VBox xmlns:fx="delete_category_vbox" spacing="20" fx:controller="controller.DeleteCategoryVC">
+<VBox xmlns:fx="delete_transaction_vbox" spacing="20" fx:controller="controller.DeleteTransactionVC">
     <HBox>
         <RadioButton text="Income" fx:id="incomeRadioButton" onAction="#incomeRadioButtonPressed">
 
@@ -13,6 +13,6 @@
 
         </RadioButton>
     </HBox>
-    <TableView fx:id="categoryTableView"/>
+    <TableView fx:id="transactionTableView"/>
 
 </VBox>
