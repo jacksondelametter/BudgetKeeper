@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Category;
 import service.Database;
 
@@ -50,7 +51,8 @@ public class DeleteCategoryVC {
             row.setOnMouseClicked(mouseEvent -> {
                 if(mouseEvent.getClickCount() == 2 && !row.isEmpty()) {
                     Category cat = row.getItem();
-                    System.out.printf("Selected %s", cat.getName());
+                    Database.deleteCategory(cat);
+                    categoryTableView.getItems().remove(cat);
                 }
             });
             return row;

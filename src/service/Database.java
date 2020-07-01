@@ -58,6 +58,18 @@ public class Database {
         return categories;
     }
 
+    public static void deleteCategory(Category cat) {
+        String deleteStatement = "DELETE FROM categories WHERE name=?";
+        try (Connection conn = connect()){
+            PreparedStatement stmt = conn.prepareStatement(deleteStatement);
+            stmt.setString(1, cat.getName());
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
     public static void addTransaction(Transaction transaction) {
         String transactionStmt = "INSERT INTO transactions (date, type, category, description, amount) " +
                 "VALUES (?, ?, ?, ?, ?);";
