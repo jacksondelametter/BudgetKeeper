@@ -100,13 +100,27 @@ public class MainViewVC {
     }
 
     @FXML
-    public void deleteTransactionPressed(Event e) {
-        System.out.println("Delete Income Pressed");
+    public void deleteTransactionPressed(Event e) throws Exception {
+        Stage deleteTransactionPressed = new Stage();
+        deleteTransactionPressed.setX(500);
+        deleteTransactionPressed.setY(500);
+        deleteTransactionPressed.setHeight(300);
+        deleteTransactionPressed.setWidth(500);
+        deleteTransactionPressed.setTitle("Add Category");
+        deleteTransactionPressed.setScene(getScene("AddCategory.fxml"));
+        deleteTransactionPressed.showAndWait();
     }
 
     @FXML
-    public void deleteCategoryPressed(Event e) {
-        System.out.println("Delete Category Pressed");
+    public void deleteCategoryPressed(Event e) throws Exception {
+        Stage deleteCategoryPressed = new Stage();
+        deleteCategoryPressed.setX(500);
+        deleteCategoryPressed.setY(500);
+        deleteCategoryPressed.setHeight(300);
+        deleteCategoryPressed.setWidth(500);
+        deleteCategoryPressed.setTitle("Delete Category");
+        deleteCategoryPressed.setScene(getScene("DeleteCategory.fxml"));
+        deleteCategoryPressed.showAndWait();
     }
 
     @FXML
