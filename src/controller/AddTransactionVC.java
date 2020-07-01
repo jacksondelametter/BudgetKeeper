@@ -3,6 +3,7 @@ package controller;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.Category;
 import model.Transaction;
 import service.Database;
@@ -30,6 +31,9 @@ public class AddTransactionVC {
 
     @FXML
     public TextField enterAmount;
+
+    @FXML
+    public Button addButton;
 
     private ToggleGroup incomeReceiptToggle;
 
@@ -85,9 +89,13 @@ public class AddTransactionVC {
             return;
         }
         Date date = new Date(datePicker.getValue().toEpochDay());
-        String category = categoryChoiceBox.getSelectionModel().toString();
-        String transactionType = ((RadioButton) incomeReceiptToggle.getSelectedToggle()).getText();
-        Transaction t = new Transaction(date, transactionType, category, description, amountNum);
+        String category = categoryChoiceBox.getSelectionModel().getSelectedItem();
+        RadioButton transactionTypeRadio = ((RadioButton) incomeReceiptToggle.getSelectedToggle());
+        String type = transactionTypeRadio.getText();
+        System.out.println(type);
+        Transaction t = new Transaction(date, type, category, description, amountNum);
         Database.addTransaction(t);
+        Stage stage = (Stage) addButton.getScene().getWindow();
+        stage.close();
     }
 }

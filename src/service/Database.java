@@ -20,7 +20,7 @@ public class Database {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             String transactionStatement = "CREATE TABLE IF NOT EXISTS transactions (date DATE, category STRING, " +
-                    "description STRING, amount DOUBLE);";
+                    "description STRING, amount DOUBLE, type STRING);";
             String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING NOT NULL PRIMARY KEY, type STRING);";
             stmt.execute(transactionStatement);
             stmt.execute(categoryStatement);
@@ -46,7 +46,6 @@ public class Database {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             String query = String.format("SELECT * FROM categories WHERE type='%s';", categoryType);
-            //String query = "SELECT * FROM categories;";
             ResultSet results = stmt.executeQuery(query);
             while(results.next()) {
                 String name = results.getString(1);
@@ -60,18 +59,19 @@ public class Database {
     }
 
     public static void addTransaction(Transaction transaction) {
-        String transactionStmt = "INSERT INTO transactions (date, category, description, amount, type) " +
+        String transactionStmt = "INSERT INTO transactions (date, type, category, description, amount) " +
                 "VALUES (?, ?, ?, ?, ?);";
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(transactionStmt)) {
-            stmt.setDate(1, java.sql.Date.valueOf(transaction.getDate().toString()));
-            stmt.setString(2, transaction.getCategory());
-            stmt.setString(3, transaction.getDescription());
-            stmt.setDouble(4, transaction.getAmount());
-            stmt.setString(5, transaction.getType());
+            stmt.setDate(1, new java.sql.Date(transaction.getDate().getTime()));
+            stmt.setString(2, transaction.getType());
+            stmt.setString(3, transaction.getCategory());
+            stmt.setString(4, transaction.getDescription());
+            stmt.setDouble(5, transaction.getAmount());
             stmt.executeUpdate();
 
         } catch (Exception e) {
+            System.out.println("Error adding transaction");
             System.out.println(e.getMessage());
         }
     }
@@ -83,11 +83,11 @@ public class Database {
             String query = "SELECT * FROM transactions;";
             ResultSet results = stmt.executeQuery(query);
             while(results.next()) {
-                Date transactionDate = results.getDate(0);
-                String transactionType = results.getString(1);
-                String category = results.getString(2);
-                String description = results.getString(3);
-                Double amount = results.getDouble(4);
+                Date transactionDate = results.getDate(1);
+                String transactionType = results.getString(2);
+                String category = results.getString(3);
+                String description = results.getString(4);
+                Double amount = results.getDouble(5);
                 Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount);
                 transactions.add(transaction);
             }
