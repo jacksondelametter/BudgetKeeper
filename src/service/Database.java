@@ -40,17 +40,23 @@ public class Database {
         }
     }
 
+    private static ArrayList<Category> getQueryCategories(ResultSet results) throws Exception {
+        ArrayList<Category> categories = new ArrayList<>();
+        while(results.next()) {
+            String name = results.getString(1);
+            String type  = results.getString(2);
+            categories.add(new Category(name, type));
+        }
+        return categories;
+    }
+
     public static ArrayList<Category> getCategories(String categoryType) {
         ArrayList<Category> categories = new ArrayList<>();
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             String query = String.format("SELECT * FROM categories WHERE type='%s';", categoryType);
             ResultSet results = stmt.executeQuery(query);
-            while(results.next()) {
-                String name = results.getString(1);
-                String type  = results.getString(2);
-                categories.add(new Category(name, type));
-            }
+            categories = getQueryCategories(results);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -69,20 +75,43 @@ public class Database {
         }
     }
 
-    private static ArrayList<Transaction> getQueryTransactions(ResultSet results) {
+    private static ArrayList<Transaction> getQueryTransactions(PreparedStatement stmt) throws Exception {
         ArrayList<Transaction> trans = new ArrayList<>();
-        try {
-            while(results.next()) {
-                Date transactionDate = results.getDate(1);
-                String transactionType = results.getString(2);
-                String category = results.getString(3);
-                String description = results.getString(4);
-                Double amount = results.getDouble(5);
-                String id = results.getString(6);
-                Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount, id);
-                trans.add(transaction);
-            }
+        ResultSet results = stmt.executeQuery();
+        while(results.next()) {
+            Date transactionDate = results.getDate(1);
+            String transactionType = results.getString(2);
+            String category = results.getString(3);
+            String description = results.getString(4);
+            Double amount = results.getDouble(5);
+            String id = results.getString(6);
+            Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount, id);
+            trans.add(transaction);
+        }
+        return trans;
+    }
+
+    public static ArrayList<Transaction> getTransactions(String type) {
+        String query = "SELECT * FROM transactions WHERE type=?;";
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, type);
+            transactions = getQueryTransactions(stmt);
         } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return transactions;
+    }
+
+    public static ArrayList<Transaction> getTransactionsByCategory(String type, String category) {
+        ArrayList<Transaction> trans = new ArrayList<>();
+        String query = String.format("SELECT * FROM transaction WHERE type=?, category=?;");
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, type);
+            stmt.setString(2, category);
+            trans = getQueryTransactions(stmt);
+        } catch(Exception e) {
             System.out.println(e.toString());
         }
         return trans;
@@ -105,29 +134,6 @@ public class Database {
             System.out.println("Error adding transaction");
             System.out.println(e.getMessage());
         }
-    }
-
-    public static ArrayList<Transaction> getTransactions(String type) {
-        String query = "SELECT * FROM transactions WHERE type=?;";
-        ArrayList<Transaction> transactions = new ArrayList<>();
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, type);
-            ResultSet results = stmt.executeQuery();
-            while(results.next()) {
-                Date transactionDate = results.getDate(1);
-                String transactionType = results.getString(2);
-                String category = results.getString(3);
-                String description = results.getString(4);
-                Double amount = results.getDouble(5);
-                String id = results.getString(6);
-                Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount, id);
-                transactions.add(transaction);
-            }
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        return transactions;
     }
 
     public static void deleteTransaction(Transaction tran) {
