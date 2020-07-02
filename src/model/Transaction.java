@@ -8,8 +8,8 @@ public class Transaction {
     private Date date;
     private String type;
     private String category;
-    private double amount;
     private String description;
+    private double amount;
     private String id;
 
     public Transaction(Date date, String type, String category, String description, double amount, String id) {

@@ -4,18 +4,26 @@ import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import model.Category;
+import model.Transaction;
+import service.Database;
 
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class MainViewVC {
 
@@ -26,7 +34,11 @@ public class MainViewVC {
     @FXML
     public PieChart budgetPieChart;
     @FXML
-    public TableView budgetTableView;
+    public VBox totalInformationGroup;
+    @FXML
+    public VBox incomeInformationGroup;
+    @FXML
+    public VBox receiptInformationGroup;
 
     private void setupMonthYearChoiceBox() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MMM");
@@ -53,15 +65,47 @@ public class MainViewVC {
         budgetPieChart.getData().add(d2);
     }
 
-    private void setupBudgetTableView() {
+    private double getTotal(ArrayList<Transaction> trans) {
+        double total = 0;
+        for(Transaction tran : trans) {
+            total += tran.getAmount();
+        }
+        return total;
+    }
 
+    private void setTotalInformation(ArrayList<Transaction> incomeTrans,
+                                     ArrayList<Transaction> receiptTrans) {
+        double incomeTotal = getTotal(incomeTrans);
+        double receiptTotal = getTotal(receiptTrans);
+        double totalSaved = incomeTotal - receiptTotal;
+        Text incomeText = new Text(String.format("Total Income\n\t-\t%f", incomeTotal));
+        Text spentText = new Text(String.format("Total Spent\n\t-\t%f", receiptTotal));
+        Text savedText = new Text(String.format("Total Saved\n\t-\t%f", totalSaved));
+        totalInformationGroup.getChildren().clear();
+        totalInformationGroup.getChildren().addAll(FXCollections.observableArrayList(
+                incomeText, spentText, savedText));
+    }
+
+    private void setIncomeReceiptInformation(ArrayList<Transaction> trans) {
+
+    }
+
+    private void setupInformationText() {
+        ArrayList<Transaction> incomeTrans = Database.getTransactions("Income");
+        ArrayList<Transaction> receiptTrans = Database.getTransactions("Receipt");
+        ArrayList<Category> incomeCats = Database.getCategories("Income");
+        ArrayList<Category> receiptCats = Database.getCategories("Receipt");
+        setTotalInformation(incomeTrans, receiptTrans);
     }
 
     @FXML
     public void initialize() {
         setupMonthYearChoiceBox();
         setupBudgetPieChart();
+        setupInformationText();
     }
+
+
 
     private Scene getScene(String fxml) throws Exception {
         try {
@@ -85,6 +129,7 @@ public class MainViewVC {
         addTransactionStage.setWidth(500);
         addTransactionStage.setScene(getScene("AddTransaction.fxml"));
         addTransactionStage.showAndWait();
+        setupInformationText();
     }
 
     @FXML
@@ -109,6 +154,7 @@ public class MainViewVC {
         deleteTransactionPressed.setTitle("Add Category");
         deleteTransactionPressed.setScene(getScene("DeleteTransaction.fxml"));
         deleteTransactionPressed.showAndWait();
+        setupInformationText();
     }
 
     @FXML
@@ -121,6 +167,7 @@ public class MainViewVC {
         deleteCategoryPressed.setTitle("Delete Category");
         deleteCategoryPressed.setScene(getScene("DeleteCategory.fxml"));
         deleteCategoryPressed.showAndWait();
+        setupInformationText();
     }
 
     @FXML

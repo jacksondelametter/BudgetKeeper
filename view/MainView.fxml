@@ -14,6 +14,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.SplitPane?>
 <VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewVC">
     <MenuBar>
         <Menu text="Add">
@@ -32,12 +35,19 @@
         <ChoiceBox fx:id="monthChoiceBox"/>
         <ChoiceBox fx:id="yearChoiceBox"/>
     </HBox>
-    <GridPane>
-        <columnConstraints>
-            <ColumnConstraints percentWidth="50"/>
-            <ColumnConstraints percentWidth="50"/>
-        </columnConstraints>
-        <PieChart fx:id="budgetPieChart" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TableView fx:id="budgetTableView" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-    </GridPane>
+    <SplitPane VBox.vgrow="ALWAYS">
+        <VBox alignment="CENTER">
+            <PieChart fx:id="budgetPieChart"/>
+        </VBox>
+        <VBox>
+            <VBox alignment="TOP_CENTER" >
+                <Text text="Total Information"/>
+                <VBox fx:id="totalInformationGroup"/>
+                <Text text="Income Information"/>
+                <VBox fx:id="incomeInformationGroup"/>
+                <Text text="Receipt Information"/>
+                <VBox fx:id="receiptInformationGroup"/>
+            </VBox>
+        </VBox>
+    </SplitPane>
 </VBox>

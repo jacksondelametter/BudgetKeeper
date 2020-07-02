@@ -18,8 +18,8 @@ public class Database {
     static {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            String transactionStatement = "CREATE TABLE IF NOT EXISTS transactions (date DATE, category STRING, " +
-                    "description STRING, amount DOUBLE, type STRING, id NOT NULL PRIMARY KEY);";
+            String transactionStatement = "CREATE TABLE IF NOT EXISTS transactions (date DATE, type STRING, " +
+                    "category STRING, description STRING, amount DOUBLE, id NOT NULL PRIMARY KEY);";
             String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING NOT NULL PRIMARY KEY, type STRING);";
             stmt.execute(transactionStatement);
             stmt.execute(categoryStatement);
@@ -67,6 +67,25 @@ public class Database {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    private static ArrayList<Transaction> getQueryTransactions(ResultSet results) {
+        ArrayList<Transaction> trans = new ArrayList<>();
+        try {
+            while(results.next()) {
+                Date transactionDate = results.getDate(1);
+                String transactionType = results.getString(2);
+                String category = results.getString(3);
+                String description = results.getString(4);
+                Double amount = results.getDouble(5);
+                String id = results.getString(6);
+                Transaction transaction = new Transaction(transactionDate, transactionType, category, description, amount, id);
+                trans.add(transaction);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return trans;
     }
 
     public static void addTransaction(Transaction transaction) {

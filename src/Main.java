@@ -18,8 +18,8 @@ public class Main extends Application{
         VBox vbox = loader.load();
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
-        primaryStage.setHeight(700);
-        primaryStage.setWidth(700);
+        primaryStage.setHeight(1000);
+        primaryStage.setWidth(1700);
         primaryStage.show();
     }
 
