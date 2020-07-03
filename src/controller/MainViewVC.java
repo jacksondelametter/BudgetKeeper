@@ -4,38 +4,28 @@ import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.Category;
 import model.Transaction;
 import service.Database;
+import service.DateConverter;
 
 import java.io.File;
 import java.net.URL;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class MainViewVC {
 
     @FXML
-    public ChoiceBox monthChoiceBox;
-    @FXML
-    public ChoiceBox yearChoiceBox;
+    public DatePicker datePicker;
     @FXML
     public PieChart budgetPieChart;
     @FXML
@@ -45,21 +35,9 @@ public class MainViewVC {
     @FXML
     public VBox receiptInformationGroup;
 
-    private void setupMonthYearChoiceBox() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MMM");
-        LocalDateTime rawDate = LocalDateTime.now();
-        String formattedDate = formatter.format(rawDate);
-        String[] splitDate = formattedDate.split("/");
-        String currentMonth = splitDate[1];
-        int currentYear = Integer.parseInt(splitDate[0]);
-        monthChoiceBox.setItems(FXCollections.observableArrayList("Jan", "Feb", "Mar",
-                "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"));
-        monthChoiceBox.setValue(currentMonth);
-        int startYear = 2019;
-        for(int i=startYear;i<=currentYear;i++) {
-            yearChoiceBox.getItems().add(i);
-        }
-        yearChoiceBox.setValue(currentYear);
+    private void setupDatePicker() {
+        LocalDate rawDate = LocalDate.now();
+        datePicker.setValue(rawDate);
     }
 
     private void setupBudgetPieChart() {
@@ -121,15 +99,9 @@ public class MainViewVC {
     }
 
     private void setupInformationText() {
-        Calendar cal = Calendar.getInstance();
-        int month = monthChoiceBox.getSelectionModel().getSelectedIndex();
-        int year = Integer.parseInt(yearChoiceBox.getValue().toString());
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        Date startDate = new Date(cal.getTime().getTime());
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Date endDate = new Date(cal.getTime().getTime());
+        Date date = Date.valueOf(datePicker.getValue());
+        Date startDate = DateConverter.getStartDate(date);
+        Date endDate = DateConverter.getEndDate(date);
         ArrayList<Transaction> incomeTrans = Database.getTransactions("Income", startDate, endDate);
         ArrayList<Transaction> receiptTrans = Database.getTransactions("Receipt", startDate, endDate);
         ArrayList<Category> incomeCategories = Database.getCategories("Income");
@@ -141,7 +113,7 @@ public class MainViewVC {
 
     @FXML
     public void initialize() {
-        setupMonthYearChoiceBox();
+        setupDatePicker();
         setupBudgetPieChart();
         setupInformationText();
     }
@@ -158,6 +130,12 @@ public class MainViewVC {
             System.out.println(e.toString());
         }
         return null;
+    }
+
+    @FXML
+    public void dateSelected(Event e) {
+        setupBudgetPieChart();
+        setupInformationText();
     }
 
     @FXML

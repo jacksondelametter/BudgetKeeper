@@ -17,6 +17,7 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.DatePicker?>
 <VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewVC">
     <MenuBar>
         <Menu text="Add">
@@ -32,8 +33,7 @@
         </Menu>
     </MenuBar>
     <HBox alignment="TOP_RIGHT">
-        <ChoiceBox fx:id="monthChoiceBox"/>
-        <ChoiceBox fx:id="yearChoiceBox"/>
+        <DatePicker fx:id="datePicker" onAction="#dateSelected"/>
     </HBox>
     <SplitPane VBox.vgrow="ALWAYS">
         <VBox alignment="CENTER">

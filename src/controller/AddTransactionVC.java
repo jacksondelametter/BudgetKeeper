@@ -91,7 +91,7 @@ public class AddTransactionVC {
         }
         Date date = Date.valueOf(datePicker.getValue().toString());
         String category = categoryChoiceBox.getSelectionModel().getSelectedItem();
-        RadioButton transactionTypeRadio = ((RadioButton) incomeReceiptToggle.getSelectedToggle());
+        RadioButton transactionTypeRadio = (RadioButton) incomeReceiptToggle.getSelectedToggle();
         String type = transactionTypeRadio.getText();
         String id = UUID.randomUUID().toString();
         Transaction t = new Transaction(date, type, category, description, amountNum, id);

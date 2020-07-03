@@ -2,14 +2,17 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Transaction;
 import service.Database;
+import service.DateConverter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DeleteTransactionVC {
@@ -19,6 +22,9 @@ public class DeleteTransactionVC {
 
     @FXML
     public RadioButton receiptRadioButton;
+
+    @FXML
+    public DatePicker incomeReceiptDatePicker;
 
     @FXML
     public TableView transactionTableView;
@@ -32,9 +38,21 @@ public class DeleteTransactionVC {
         incomeRadioButton.fire();
     }
 
+    private void setupDatePicker() {
+        LocalDate currentDate = LocalDate.now();
+        incomeReceiptDatePicker.setValue(currentDate);
+    }
+
     @FXML
     public void initialize() {
+        setupDatePicker();
         setupRadioButtons();
+    }
+
+    @FXML
+    public void dateSelected(Event e) {
+        RadioButton selectedCat = (RadioButton) incomeReceiptToggle.getSelectedToggle();
+        selectedCat.fireEvent(new ActionEvent());
     }
 
     private void populateTransactionTable(ArrayList<Transaction> trans) {
@@ -68,13 +86,21 @@ public class DeleteTransactionVC {
 
     @FXML
     public void incomeRadioButtonPressed(Event e) {
-        /*ArrayList<Transaction> incomeTransaction = Database.getTransactions("Income");
-        populateTransactionTable(incomeTransaction);*/
+        Date rawDate = Date.valueOf(incomeReceiptDatePicker.getValue());
+        Date startDate = DateConverter.getStartDate(rawDate);
+        Date endDate = DateConverter.getEndDate(rawDate);
+        System.out.println(startDate.toString());
+        System.out.println(endDate.toString());
+        ArrayList<Transaction> incomeTransaction = Database.getTransactions("Income", startDate, endDate);
+        populateTransactionTable(incomeTransaction);
     }
 
     @FXML
     public void receiptRadioButtonPressed(Event e) {
-        /*ArrayList<Transaction> receiptTransaction = Database.getTransactions("Receipt");
-        populateTransactionTable(receiptTransaction);*/
+        Date rawDate = Date.valueOf(incomeReceiptDatePicker.getValue());
+        Date startDate = DateConverter.getStartDate(rawDate);
+        Date endDate = DateConverter.getEndDate(rawDate);
+        ArrayList<Transaction> receiptTransaction = Database.getTransactions("Receipt", startDate, endDate);
+        populateTransactionTable(receiptTransaction);
     }
 }

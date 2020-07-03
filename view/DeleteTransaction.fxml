@@ -4,14 +4,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.DatePicker?>
 <VBox xmlns:fx="delete_transaction_vbox" spacing="20" fx:controller="controller.DeleteTransactionVC">
     <HBox>
-        <RadioButton text="Income" fx:id="incomeRadioButton" onAction="#incomeRadioButtonPressed">
-
-        </RadioButton>
-        <RadioButton text="Receipt" fx:id="receiptRadioButton" onAction="#receiptRadioButtonPressed">
-
-        </RadioButton>
+        <RadioButton text="Income" fx:id="incomeRadioButton" onAction="#incomeRadioButtonPressed"/>
+        <RadioButton text="Receipt" fx:id="receiptRadioButton" onAction="#receiptRadioButtonPressed"/>
+        <DatePicker fx:id="incomeReceiptDatePicker" onAction="#dateSelected"/>
     </HBox>
     <TableView fx:id="transactionTableView"/>
 
