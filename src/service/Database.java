@@ -92,7 +92,8 @@ public class Database {
     }
 
     public static ArrayList<Transaction> getTransactions(String type, Date startDate, Date endDate) {
-        String query = "SELECT * FROM transactions WHERE type=? AND date>=? AND date<=?;";
+        String query = "SELECT * FROM transactions WHERE type=? AND date>=? AND date<=? " +
+                "ORDER BY category, amount;";
         ArrayList<Transaction> transactions = new ArrayList<>();
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {

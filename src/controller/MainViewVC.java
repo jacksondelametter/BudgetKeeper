@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class MainViewVC {
 
@@ -90,8 +91,33 @@ public class MainViewVC {
                 incomeText, spentText, savedText));
     }
 
-    private void setIncomeReceiptInformation(ArrayList<Transaction> trans) {
-
+    private void setIncomeReceiptInformation(VBox infoGroup,
+                                             ArrayList<Category> cats,
+                                             ArrayList<Transaction> trans) {
+        infoGroup.getChildren().clear();
+        HashMap<String, VBox> categoryGroupMap = new HashMap<>();
+        for(Category cat : cats) {
+            if(!categoryGroupMap.containsKey(cat.getName())) {
+                VBox categoryGroup = new VBox();
+                Text categoryHeader = new Text(String.format("%s\n\t", cat.getName()));
+                categoryGroup.getChildren().add(categoryHeader);
+                categoryGroupMap.put(cat.getName(), categoryGroup);
+            }
+        }
+        for(Transaction tran : trans) {
+            String tranCategory = tran.getCategory();
+            Text categoryText = new Text(String.format("\t%-30s - %f",
+                    tran.getDescription(), tran.getAmount()));
+            categoryGroupMap.get(tranCategory).getChildren().add(categoryText);
+        }
+        for(Category cat : cats) {
+            VBox categoryGroup = categoryGroupMap.get(cat.getName());
+            if(categoryGroup.getChildren().size() > 1) {
+                Text space = new Text("\n");
+                categoryGroup.getChildren().add(space);
+                infoGroup.getChildren().add(categoryGroup);
+            }
+        }
     }
 
     private void setupInformationText() {
@@ -106,9 +132,11 @@ public class MainViewVC {
         Date endDate = new Date(cal.getTime().getTime());
         ArrayList<Transaction> incomeTrans = Database.getTransactions("Income", startDate, endDate);
         ArrayList<Transaction> receiptTrans = Database.getTransactions("Receipt", startDate, endDate);
-        ArrayList<Category> incomeCats = Database.getCategories("Income");
-        ArrayList<Category> receiptCats = Database.getCategories("Receipt");
+        ArrayList<Category> incomeCategories = Database.getCategories("Income");
+        ArrayList<Category> receiptCategories = Database.getCategories("Receipt");
         setTotalInformation(incomeTrans, receiptTrans);
+        setIncomeReceiptInformation(incomeInformationGroup, incomeCategories, incomeTrans);
+        setIncomeReceiptInformation(receiptInformationGroup, receiptCategories, receiptTrans);
     }
 
     @FXML
