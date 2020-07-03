@@ -54,7 +54,7 @@ public class Database {
         ArrayList<Category> categories = new ArrayList<>();
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            String query = String.format("SELECT * FROM categories WHERE type='%s';", categoryType);
+            String query = String.format("SELECT * FROM categories WHERE type='%s' ORDER BY name;", categoryType);
             ResultSet results = stmt.executeQuery(query);
             categories = getQueryCategories(results);
         } catch (Exception e) {
