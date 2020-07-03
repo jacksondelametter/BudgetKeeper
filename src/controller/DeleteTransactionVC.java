@@ -68,13 +68,13 @@ public class DeleteTransactionVC {
 
     @FXML
     public void incomeRadioButtonPressed(Event e) {
-        ArrayList<Transaction> incomeTransaction = Database.getTransactions("Income");
-        populateTransactionTable(incomeTransaction);
+        /*ArrayList<Transaction> incomeTransaction = Database.getTransactions("Income");
+        populateTransactionTable(incomeTransaction);*/
     }
 
     @FXML
     public void receiptRadioButtonPressed(Event e) {
-        ArrayList<Transaction> receiptTransaction = Database.getTransactions("Receipt");
-        populateTransactionTable(receiptTransaction);
+        /*ArrayList<Transaction> receiptTransaction = Database.getTransactions("Receipt");
+        populateTransactionTable(receiptTransaction);*/
     }
 }

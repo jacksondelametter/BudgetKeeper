@@ -91,12 +91,14 @@ public class Database {
         return trans;
     }
 
-    public static ArrayList<Transaction> getTransactions(String type) {
-        String query = "SELECT * FROM transactions WHERE type=?;";
+    public static ArrayList<Transaction> getTransactions(String type, Date startDate, Date endDate) {
+        String query = "SELECT * FROM transactions WHERE type=? AND date>=? AND date<=?;";
         ArrayList<Transaction> transactions = new ArrayList<>();
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, type);
+            stmt.setDate(2, startDate);
+            stmt.setDate(3, endDate);
             transactions = getQueryTransactions(stmt);
         } catch (Exception e) {
             System.out.println(e.toString());

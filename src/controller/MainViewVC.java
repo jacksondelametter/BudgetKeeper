@@ -21,9 +21,13 @@ import service.Database;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainViewVC {
 
@@ -91,8 +95,17 @@ public class MainViewVC {
     }
 
     private void setupInformationText() {
-        ArrayList<Transaction> incomeTrans = Database.getTransactions("Income");
-        ArrayList<Transaction> receiptTrans = Database.getTransactions("Receipt");
+        Calendar cal = Calendar.getInstance();
+        int month = monthChoiceBox.getSelectionModel().getSelectedIndex();
+        int year = Integer.parseInt(yearChoiceBox.getValue().toString());
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        Date startDate = new Date(cal.getTime().getTime());
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = new Date(cal.getTime().getTime());
+        ArrayList<Transaction> incomeTrans = Database.getTransactions("Income", startDate, endDate);
+        ArrayList<Transaction> receiptTrans = Database.getTransactions("Receipt", startDate, endDate);
         ArrayList<Category> incomeCats = Database.getCategories("Income");
         ArrayList<Category> receiptCats = Database.getCategories("Receipt");
         setTotalInformation(incomeTrans, receiptTrans);
