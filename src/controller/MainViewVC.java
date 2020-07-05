@@ -17,6 +17,7 @@ import service.DateConverter;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Array;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,11 +42,32 @@ public class MainViewVC {
     }
 
     private void setupBudgetPieChart() {
-        PieChart.Data d1 = new PieChart.Data("Utillities", 200);
-        PieChart.Data d2 = new PieChart.Data("Subscriptions", 800);
-
-        budgetPieChart.getData().add(d1);
-        budgetPieChart.getData().add(d2);
+        budgetPieChart.getData().clear();
+        Date date = Date.valueOf(datePicker.getValue());
+        Date startDate = DateConverter.getStartDate(date);
+        Date endDate = DateConverter.getEndDate(date);
+        ArrayList<Transaction> receipts = Database.getTransactions("Receipt", startDate, endDate);
+        ArrayList<Category> cats = Database.getCategories("Receipt");
+        HashMap<String, Double> categoryTotals = new HashMap<>();
+        for(Category cat : cats) {
+            if(!categoryTotals.containsKey(cat.getName())) {
+                categoryTotals.put(cat.getName(), 0.0);
+            }
+        }
+        for(Transaction receipt : receipts) {
+            String categoryName = receipt.getCategory();
+            double total = categoryTotals.get(categoryName);
+            total += receipt.getAmount();
+            categoryTotals.put(categoryName, total);
+        }
+        for(Category cat : cats) {
+            String categoryName = cat.getName();
+            double total = categoryTotals.get(categoryName);
+            if(total > 0.0) {
+                PieChart.Data data = new PieChart.Data(categoryName, total);
+                budgetPieChart.getData().add(data);
+            }
+        }
     }
 
     private double getTotal(ArrayList<Transaction> trans) {
@@ -111,11 +133,15 @@ public class MainViewVC {
         setIncomeReceiptInformation(receiptInformationGroup, receiptCategories, receiptTrans);
     }
 
+    private void updateMainView() {
+        setupBudgetPieChart();
+        setupInformationText();
+    }
+
     @FXML
     public void initialize() {
         setupDatePicker();
-        setupBudgetPieChart();
-        setupInformationText();
+        updateMainView();
     }
 
 
@@ -148,7 +174,7 @@ public class MainViewVC {
         addTransactionStage.setWidth(500);
         addTransactionStage.setScene(getScene("AddTransaction.fxml"));
         addTransactionStage.showAndWait();
-        setupInformationText();
+        updateMainView();
     }
 
     @FXML
@@ -174,6 +200,7 @@ public class MainViewVC {
         deleteTransactionPressed.setScene(getScene("DeleteTransaction.fxml"));
         deleteTransactionPressed.showAndWait();
         setupInformationText();
+        updateMainView();
     }
 
     @FXML
@@ -187,6 +214,7 @@ public class MainViewVC {
         deleteCategoryPressed.setScene(getScene("DeleteCategory.fxml"));
         deleteCategoryPressed.showAndWait();
         setupInformationText();
+        updateMainView();
     }
 
     @FXML
