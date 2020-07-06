@@ -141,8 +141,7 @@ public class MainViewVC {
     @FXML
     public void initialize() {
         setupDatePicker();
-        Database.initialize();
-        //updateMainView();
+        updateMainView();
     }
 
 

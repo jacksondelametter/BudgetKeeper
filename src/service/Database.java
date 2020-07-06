@@ -15,10 +15,6 @@ public class Database {
         return conn;
     }
 
-    public static void initialize() {
-
-    }
-
     static {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {

@@ -44,7 +44,9 @@ public class DeleteCategoryVC {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryTableView.getColumns().add(nameCol);
         for (Category cat : cats) {
-            categoryTableView.getItems().add(cat);
+            if(!cat.getName().equals("Other Income") && !cat.getName().equals("Other Receipt")) {
+                categoryTableView.getItems().add(cat);
+            }
         }
         categoryTableView.setRowFactory(tableView -> {
             TableRow<Category> row = new TableRow<>();
