@@ -18,6 +18,8 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Region?>
 <VBox xmlns:fx="main_vbox" fx:controller="controller.MainViewVC">
     <MenuBar>
         <Menu text="Add">
@@ -39,15 +41,13 @@
         <VBox alignment="CENTER">
             <PieChart fx:id="budgetPieChart"/>
         </VBox>
-        <VBox>
-            <VBox alignment="TOP_CENTER" >
-                <Text text="Total Information"/>
-                <VBox fx:id="totalInformationGroup"/>
-                <Text text="Income Information"/>
-                <VBox fx:id="incomeInformationGroup"/>
-                <Text text="Receipt Information"/>
-                <VBox fx:id="receiptInformationGroup"/>
-            </VBox>
+        <VBox alignment="TOP_CENTER">
+            <Text text="Total Information"/>
+            <VBox fx:id="totalInformationGroup"/>
+            <Text text="Income Information" />
+            <VBox fx:id="incomeInformationGroup"/>
+            <Text text="Receipt Information"/>
+            <VBox fx:id="receiptInformationGroup"/>
         </VBox>
     </SplitPane>
 </VBox>

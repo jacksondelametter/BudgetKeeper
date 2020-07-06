@@ -15,6 +15,10 @@ public class Database {
         return conn;
     }
 
+    public static void initialize() {
+
+    }
+
     static {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
@@ -23,7 +27,18 @@ public class Database {
             String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING NOT NULL PRIMARY KEY, type STRING);";
             stmt.execute(transactionStatement);
             stmt.execute(categoryStatement);
+
+            String otherCatStatement = "INSERT OR REPLACE INTO categories (name, type) VALUES (?, ?)";
+            PreparedStatement otherCatReceipt = conn.prepareStatement(otherCatStatement);
+            otherCatReceipt.setString(1, "Other Receipt");
+            otherCatReceipt.setString(2, "Receipt");
+            PreparedStatement otherCatIncome = conn.prepareStatement(otherCatStatement);
+            otherCatIncome.setString( 1, "Other Income");
+            otherCatIncome.setString(2, "Income");
+            otherCatReceipt.executeUpdate();
+            otherCatIncome.executeUpdate();
         } catch (Exception e) {
+            System.out.println("Error on database initialization");
             System.out.println(e.toString());
         }
     }
@@ -64,11 +79,24 @@ public class Database {
     }
 
     public static void deleteCategory(Category cat) {
+        String catName = cat.getName();
         String deleteStatement = "DELETE FROM categories WHERE name=?";
+        String otherCategoryStatement = "UPDATE transactions SET category=? WHERE category=?";
         try (Connection conn = connect()){
             PreparedStatement stmt = conn.prepareStatement(deleteStatement);
-            stmt.setString(1, cat.getName());
+            PreparedStatement otherCatStmt = conn.prepareStatement(otherCategoryStatement);
+            stmt.setString(1, catName);
+            String otherCat = "";
+            if(cat.getType().equals("Income")) {
+                otherCat = "Other Income";
+            }
+            else {
+                otherCat = "Other Receipt";
+            }
+            otherCatStmt.setString(1, otherCat);
+            otherCatStmt.setString(2, catName);
             stmt.executeUpdate();
+            otherCatStmt.executeUpdate();
 
         } catch (Exception e) {
             System.out.println(e.toString());

@@ -141,7 +141,8 @@ public class MainViewVC {
     @FXML
     public void initialize() {
         setupDatePicker();
-        updateMainView();
+        Database.initialize();
+        //updateMainView();
     }
 
 
@@ -199,7 +200,6 @@ public class MainViewVC {
         deleteTransactionPressed.setTitle("Add Category");
         deleteTransactionPressed.setScene(getScene("DeleteTransaction.fxml"));
         deleteTransactionPressed.showAndWait();
-        setupInformationText();
         updateMainView();
     }
 
@@ -213,7 +213,6 @@ public class MainViewVC {
         deleteCategoryPressed.setTitle("Delete Category");
         deleteCategoryPressed.setScene(getScene("DeleteCategory.fxml"));
         deleteCategoryPressed.showAndWait();
-        setupInformationText();
         updateMainView();
     }
 
