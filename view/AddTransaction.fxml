@@ -30,7 +30,7 @@
         <RadioButton text="Choose Category" fx:id="chooseCatRadioButton" onAction="#chooseCatPressed"/>
         <RadioButton text="Add Category" fx:id="addCatRadioButton" onAction="#addCatPressed"/>
     </HBox>
-    <ChoiceBox fx:id="categoryChoiceBox"/>
+    <HBox fx:id="categoryGroup"/>
     <TextField fx:id="enterDescription" promptText="Enter Description"/>
     <TextField fx:id="enterAmount" promptText="Enter amount"/>
     <Button fx:id="addButton" text="Add" onAction="#addButtonPressed"/>

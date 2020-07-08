@@ -2,7 +2,9 @@ package controller;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Category;
 import model.Transaction;
@@ -25,13 +27,17 @@ public class AddTransactionVC {
     public DatePicker datePicker;
 
     @FXML
-    public ChoiceBox<String> categoryChoiceBox;
-
-    @FXML
     public RadioButton chooseCatRadioButton;
 
     @FXML
     public RadioButton addCatRadioButton;
+
+    @FXML
+    public HBox categoryGroup;
+
+    private ChoiceBox<String> chooseCatChoiceBox;
+
+    private TextField addCatField;
 
     @FXML
     public TextField enterDescription;
@@ -63,29 +69,67 @@ public class AddTransactionVC {
         datePicker.setValue(currentDate);
     }
 
+    private void setupCategoryGroup() {
+        chooseCatChoiceBox = new ChoiceBox<>();
+        addCatField = new TextField();
+        addCatField.setPromptText("Add Category");
+    }
+
     @FXML
     public void initialize() {
+        setupCategoryGroup();
         setupRadioButtons();
         setupDatePicker();
     }
 
-    private void addCategoriesToChoiceBox(ArrayList<Category> categories) {
-        categoryChoiceBox.getItems().clear();
-        for(Category cat : categories) {
-            categoryChoiceBox.getItems().add(cat.getName());
+    private String getTransactionType() {
+        RadioButton transactionTypeRadio = (RadioButton) incomeReceiptToggle.getSelectedToggle();
+        return transactionTypeRadio.getText();
+    }
+
+    private boolean addCategory() {
+        String name = addCatField.getText();
+        if (!name.equals("")) {
+            String type = getTransactionType();
+            Category c = new Category(name, type);
+            Database.addCategory(c);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private String getCategory() {
+        RadioButton categoryButton = (RadioButton) categoryToggle.getSelectedToggle();
+        if(categoryButton == chooseCatRadioButton) {
+            return chooseCatChoiceBox.getSelectionModel().getSelectedItem();
+        }
+        else if(addCategory()) {
+            return addCatField.getText();
+        }
+        else {
+            return null;
+        }
+    }
+
+    private void updateChooseCatChoiceBox() {
+        chooseCatChoiceBox.getItems().clear();
+        String type = getTransactionType();
+        ArrayList<Category> cats = Database.getCategories(type);
+        for(Category cat : cats) {
+            chooseCatChoiceBox.getItems().add(cat.getName());
         }
     }
 
     @FXML
-    public void incomeRadioButtonPressed(Event e) {
-        ArrayList<Category> incomeCat = Database.getCategories("Income");
-        addCategoriesToChoiceBox(incomeCat);
+    public void incomeRadioButtonPressed() {
+        updateChooseCatChoiceBox();
     }
 
     @FXML
-    public void receiptRadioButtonPressed(Event e) {
-        ArrayList<Category> receiptCat = Database.getCategories("Receipt");
-        addCategoriesToChoiceBox(receiptCat);
+    public void receiptRadioButtonPressed() {
+        updateChooseCatChoiceBox();
     }
 
     @FXML
@@ -93,33 +137,44 @@ public class AddTransactionVC {
         String description = enterDescription.getText();
         String amount = enterAmount.getText();
         if (description.equals("") && amount.equals("")) {
+            System.out.println("Could not add transaction: description is blank");
             return;
         }
         double amountNum = 0.0;
         try {
             amountNum = Double.parseDouble(amount);
         } catch (Exception error) {
-            System.out.println(error.toString());
+            System.out.println("Could not add transaction: amount is not a number");
             return;
         }
         Date date = Date.valueOf(datePicker.getValue().toString());
-        String category = categoryChoiceBox.getSelectionModel().getSelectedItem();
-        RadioButton transactionTypeRadio = (RadioButton) incomeReceiptToggle.getSelectedToggle();
-        String type = transactionTypeRadio.getText();
-        String id = UUID.randomUUID().toString();
-        Transaction t = new Transaction(date, type, category, description, amountNum, id);
-        Database.addTransaction(t);
-        Stage stage = (Stage) addButton.getScene().getWindow();
-        stage.close();
+        String category = getCategory();
+        if(category != null) {
+            String type = getTransactionType();
+            String id = UUID.randomUUID().toString();
+            Transaction t = new Transaction(date, type, category, description, amountNum, id);
+            Database.addTransaction(t);
+            Stage stage = (Stage) addButton.getScene().getWindow();
+            stage.close();
+        }
+        else {
+            System.out.println("Could not add transaction: Error with category name");
+        }
+    }
+
+    private void addToCatGroup(Node node) {
+        categoryGroup.getChildren().clear();
+        categoryGroup.getChildren().add(node);
     }
 
     @FXML
     public void chooseCatPressed(Event e) {
-
+        updateChooseCatChoiceBox();
+        addToCatGroup(chooseCatChoiceBox);
     }
 
     @FXML
     public void addCatPressed(Event e) {
-
+        addToCatGroup(addCatField);
     }
 }

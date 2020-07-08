@@ -170,7 +170,7 @@ public class MainViewVC {
         addTransactionStage.setTitle("Add Transaction");
         addTransactionStage.setX(500);
         addTransactionStage.setY(500);
-        addTransactionStage.setHeight(300);
+        addTransactionStage.setHeight(500);
         addTransactionStage.setWidth(500);
         addTransactionStage.setScene(getScene("AddTransaction.fxml"));
         addTransactionStage.showAndWait();
