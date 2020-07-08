@@ -178,18 +178,6 @@ public class MainViewVC {
     }
 
     @FXML
-    public void addCategoryPressed(Event e) throws Exception{
-        Stage addCategoryStage = new Stage();
-        addCategoryStage.setX(500);
-        addCategoryStage.setY(500);
-        addCategoryStage.setHeight(300);
-        addCategoryStage.setWidth(500);
-        addCategoryStage.setTitle("Add Category");
-        addCategoryStage.setScene(getScene("AddCategory.fxml"));
-        addCategoryStage.showAndWait();
-    }
-
-    @FXML
     public void deleteTransactionPressed(Event e) throws Exception {
         Stage deleteTransactionPressed = new Stage();
         deleteTransactionPressed.setX(500);
@@ -199,19 +187,6 @@ public class MainViewVC {
         deleteTransactionPressed.setTitle("Add Category");
         deleteTransactionPressed.setScene(getScene("DeleteTransaction.fxml"));
         deleteTransactionPressed.showAndWait();
-        updateMainView();
-    }
-
-    @FXML
-    public void deleteCategoryPressed(Event e) throws Exception {
-        Stage deleteCategoryPressed = new Stage();
-        deleteCategoryPressed.setX(500);
-        deleteCategoryPressed.setY(500);
-        deleteCategoryPressed.setHeight(300);
-        deleteCategoryPressed.setWidth(500);
-        deleteCategoryPressed.setTitle("Delete Category");
-        deleteCategoryPressed.setScene(getScene("DeleteCategory.fxml"));
-        deleteCategoryPressed.showAndWait();
         updateMainView();
     }
 

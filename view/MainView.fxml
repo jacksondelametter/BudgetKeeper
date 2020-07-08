@@ -24,11 +24,9 @@
     <MenuBar>
         <Menu text="Add">
             <MenuItem fx:id="addTransaction" onAction="#addTransactionPressed" text="Transaction"/>
-            <MenuItem fx:id="addCategory" onAction="#addCategoryPressed" text="Category"/>
         </Menu>
         <Menu text="Delete">
             <MenuItem fx:id="deleteTransaction" onAction="#deleteTransactionPressed" text="Transaction"/>
-            <MenuItem fx:id="deleteCategory" onAction="#deleteCategoryPressed" text="Category"/>
         </Menu>
         <Menu text="Stats">
             <MenuItem fx:id="print_stats" onAction="#printStatsPressed" text="Print Stats"/>
