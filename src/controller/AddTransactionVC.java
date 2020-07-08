@@ -44,11 +44,18 @@ public class AddTransactionVC {
 
     private ToggleGroup incomeReceiptToggle;
 
+    private ToggleGroup categoryToggle;
+
     private void setupRadioButtons() {
         incomeReceiptToggle = new ToggleGroup();
         incomeRadioButton.setToggleGroup(incomeReceiptToggle);
         receiptRadioButton.setToggleGroup(incomeReceiptToggle);
         incomeRadioButton.fire();
+
+        categoryToggle = new ToggleGroup();
+        chooseCatRadioButton.setToggleGroup(categoryToggle);
+        addCatRadioButton.setToggleGroup(categoryToggle);
+        chooseCatRadioButton.fire();
     }
 
     private void setupDatePicker() {
