@@ -26,6 +26,10 @@
         </Label>
         <DatePicker fx:id="datePicker"/>
     </HBox>
+    <HBox>
+        <RadioButton text="Choose Category" fx:id="chooseCatRadioButton" onAction="#chooseCatPressed"/>
+        <RadioButton text="Add Category" fx:id="addCatRadioButton" onAction="#addCatPressed"/>
+    </HBox>
     <ChoiceBox fx:id="categoryChoiceBox"/>
     <TextField fx:id="enterDescription" promptText="Enter Description"/>
     <TextField fx:id="enterAmount" promptText="Enter amount"/>

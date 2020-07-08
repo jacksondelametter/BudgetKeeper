@@ -28,6 +28,12 @@ public class AddTransactionVC {
     public ChoiceBox<String> categoryChoiceBox;
 
     @FXML
+    public RadioButton chooseCatRadioButton;
+
+    @FXML
+    public RadioButton addCatRadioButton;
+
+    @FXML
     public TextField enterDescription;
 
     @FXML
@@ -98,5 +104,15 @@ public class AddTransactionVC {
         Database.addTransaction(t);
         Stage stage = (Stage) addButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    public void chooseCatPressed(Event e) {
+
+    }
+
+    @FXML
+    public void addCatPressed(Event e) {
+
     }
 }
