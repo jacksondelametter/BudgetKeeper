@@ -165,10 +165,16 @@ public class Database {
 
     public static void deleteTransaction(Transaction tran) {
         String deleteStatement = "DELETE FROM transactions WHERE id=?";
+        String deleteCatStatement = "DELETE from categories WHERE name=? AND " +
+                "NOT EXISTS (SELECT * FROM transactions WHERE category=?);";
         try (Connection conn = connect()){
             PreparedStatement stmt = conn.prepareStatement(deleteStatement);
+            PreparedStatement catStmt = conn.prepareStatement(deleteCatStatement);
             stmt.setString(1,tran.getId());
+            catStmt.setString(1, tran.getCategory());
+            catStmt.setString(2, tran.getCategory());
             stmt.executeUpdate();
+            catStmt.executeUpdate();
 
         } catch (Exception e) {
             System.out.println(e.toString());
