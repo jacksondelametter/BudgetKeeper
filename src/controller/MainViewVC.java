@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.source.tree.Tree;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -7,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,6 +38,17 @@ public class MainViewVC {
     public VBox incomeInformationGroup;
     @FXML
     public VBox receiptInformationGroup;
+
+    @FXML
+    public TreeView infoTreeView;
+    @FXML
+    private TreeItem root;
+
+    private void setupTreeView() {
+        root = new TreeItem("Budget Information");
+        root.setExpanded(true);
+        infoTreeView.setRoot(root);
+    }
 
     private void setupDatePicker() {
         LocalDate rawDate = LocalDate.now();
@@ -82,42 +96,39 @@ public class MainViewVC {
                                      ArrayList<Transaction> receiptTrans) {
         double incomeTotal = getTotal(incomeTrans);
         double receiptTotal = getTotal(receiptTrans);
-        double totalSaved = incomeTotal - receiptTotal;
-        Text incomeText = new Text(String.format("Total Income\n\t-\t%f", incomeTotal));
-        Text spentText = new Text(String.format("Total Spent\n\t-\t%f", receiptTotal));
-        Text savedText = new Text(String.format("Total Saved\n\t-\t%f", totalSaved));
-        totalInformationGroup.getChildren().clear();
-        totalInformationGroup.getChildren().addAll(FXCollections.observableArrayList(
-                incomeText, spentText, savedText));
+        double saved = incomeTotal - receiptTotal;
+        TreeItem totalInfo = new TreeItem("Total");
+        TreeItem totalIncome = new TreeItem(String.format("Total Income - %5f", incomeTotal));
+        TreeItem spentTotal = new TreeItem(String.format("Total Spent - %5f", receiptTotal));
+        TreeItem totalSaved = new TreeItem(String.format("Total Saved - %5f", saved));
+        totalInfo.getChildren().add(totalIncome);
+        totalInfo.getChildren().add(spentTotal);
+        totalInfo.getChildren().add(totalSaved);
+        root.getChildren().add(totalInfo);
     }
 
-    private void setIncomeReceiptInformation(VBox infoGroup,
+    private void setIncomeReceiptInformation(String header,
                                              ArrayList<Category> cats,
                                              ArrayList<Transaction> trans) {
-        infoGroup.getChildren().clear();
-        HashMap<String, VBox> categoryGroupMap = new HashMap<>();
+        TreeItem incomeReceiptGroup = new TreeItem(header);
+        HashMap<String, TreeItem> categoryGroupMap = new HashMap<>();
         for(Category cat : cats) {
-            if(!categoryGroupMap.containsKey(cat.getName())) {
-                VBox categoryGroup = new VBox();
-                Text categoryHeader = new Text(String.format("%s\n\t", cat.getName()));
-                categoryGroup.getChildren().add(categoryHeader);
-                categoryGroupMap.put(cat.getName(), categoryGroup);
-            }
+            TreeItem catGroup = new TreeItem(cat.getName());
+            categoryGroupMap.put(cat.getName(), catGroup);
         }
         for(Transaction tran : trans) {
             String tranCategory = tran.getCategory();
-            Text categoryText = new Text(String.format("\t%-30s - %f",
+            TreeItem categoryText = new TreeItem(String.format("%s - %f",
                     tran.getDescription(), tran.getAmount()));
             categoryGroupMap.get(tranCategory).getChildren().add(categoryText);
         }
         for(Category cat : cats) {
-            VBox categoryGroup = categoryGroupMap.get(cat.getName());
-            if(categoryGroup.getChildren().size() > 1) {
-                Text space = new Text("\n");
-                categoryGroup.getChildren().add(space);
-                infoGroup.getChildren().add(categoryGroup);
+            TreeItem catGroup = categoryGroupMap.get(cat.getName());
+            if(catGroup.getChildren().size() > 0) {
+                incomeReceiptGroup.getChildren().add(catGroup);
             }
         }
+        root.getChildren().add(incomeReceiptGroup);
     }
 
     private void setupInformationText() {
@@ -128,9 +139,10 @@ public class MainViewVC {
         ArrayList<Transaction> receiptTrans = Database.getTransactions("Receipt", startDate, endDate);
         ArrayList<Category> incomeCategories = Database.getCategories("Income");
         ArrayList<Category> receiptCategories = Database.getCategories("Receipt");
+        setupTreeView();
         setTotalInformation(incomeTrans, receiptTrans);
-        setIncomeReceiptInformation(incomeInformationGroup, incomeCategories, incomeTrans);
-        setIncomeReceiptInformation(receiptInformationGroup, receiptCategories, receiptTrans);
+        setIncomeReceiptInformation("Income", incomeCategories, incomeTrans);
+        setIncomeReceiptInformation("Receipt", receiptCategories, receiptTrans);
     }
 
     private void updateMainView() {
