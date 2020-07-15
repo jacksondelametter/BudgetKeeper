@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<VBox xmlns:fx="main_vbox" fx:controller="controller.MessageVC" alignment="TOP_CENTER">
+    <Text fx:id="messageField"/>
+    <HBox>
+        <Button fx:id="okButton" text="ok"/>
+        <Button fx:id="cancelButton" text="cancel"/>
+    </HBox>
+</VBox>
