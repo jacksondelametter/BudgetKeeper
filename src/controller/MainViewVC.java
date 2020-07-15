@@ -203,7 +203,7 @@ public class MainViewVC {
     }
 
     @FXML
-    public void printStatsPressed(Event e) {
+    public void compareMonthsPressed(Event e) {
         System.out.println("Print Stats pressed");
     }
 }

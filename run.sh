@@ -1,0 +1,1 @@
+java --module-path /home/jackson/Documents/javafx-sdk-14.0.1/lib --add-modules javafx.controls,javafx.base,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web,javafx.swt ~/Documents/BudgetKeeper/out/production/BudgetKeeper/Main.class
