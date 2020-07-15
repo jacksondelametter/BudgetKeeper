@@ -2,14 +2,19 @@ package controller;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Category;
 import model.Transaction;
 import service.Database;
 
+import java.io.File;
+import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -133,7 +138,7 @@ public class AddTransactionVC {
     }
 
     @FXML
-    public void addButtonPressed(Event e) {
+    public void addButtonPressed(Event e) throws Exception{
         String description = enterDescription.getText();
         String amount = enterAmount.getText();
         if (description.equals("") && amount.equals("")) {
@@ -150,12 +155,21 @@ public class AddTransactionVC {
         Date date = Date.valueOf(datePicker.getValue().toString());
         String category = getCategory();
         if(category != null) {
-            String type = getTransactionType();
+            Stage messageStage = new Stage();
+            FXMLLoader loader = new FXMLLoader();
+            URL url = new File("/home/jackson/Documents/BudgetKeeper/view/Message.fxml").toURI().toURL();
+            loader.setLocation(url);
+            VBox messageBox = loader.load();
+            messageStage.setScene(new Scene(messageBox));
+            messageStage.setWidth(300);
+            messageStage.setHeight(300);
+            messageStage.showAndWait();
+            /*String type = getTransactionType();
             String id = UUID.randomUUID().toString();
             Transaction t = new Transaction(date, type, category, description, amountNum, id);
             Database.addTransaction(t);
             Stage stage = (Stage) addButton.getScene().getWindow();
-            stage.close();
+            stage.close();*/
         }
         else {
             System.out.println("Could not add transaction: Error with category name");
