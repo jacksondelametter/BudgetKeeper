@@ -30,9 +30,6 @@
         <Menu text="Delete">
             <MenuItem fx:id="deleteTransaction" onAction="#deleteTransactionPressed" text="Transaction"/>
         </Menu>
-        <Menu text="Stats">
-            <MenuItem fx:id="compareMonths" onAction="#compareMonthsPressed" text="Compare Months"/>
-        </Menu>
     </MenuBar>
     <HBox alignment="TOP_RIGHT">
         <DatePicker fx:id="datePicker" onAction="#dateSelected"/>

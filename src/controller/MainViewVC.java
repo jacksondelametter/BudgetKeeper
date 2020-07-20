@@ -32,12 +32,6 @@ public class MainViewVC {
     public DatePicker datePicker;
     @FXML
     public PieChart budgetPieChart;
-    @FXML
-    public VBox totalInformationGroup;
-    @FXML
-    public VBox incomeInformationGroup;
-    @FXML
-    public VBox receiptInformationGroup;
 
     @FXML
     public TreeView infoTreeView;
@@ -98,9 +92,9 @@ public class MainViewVC {
         double receiptTotal = getTotal(receiptTrans);
         double saved = incomeTotal - receiptTotal;
         TreeItem totalInfo = new TreeItem("Total");
-        TreeItem totalIncome = new TreeItem(String.format("Total Income - %5f", incomeTotal));
-        TreeItem spentTotal = new TreeItem(String.format("Total Spent - %5f", receiptTotal));
-        TreeItem totalSaved = new TreeItem(String.format("Total Saved - %5f", saved));
+        TreeItem totalIncome = new TreeItem(String.format("Total Income - %5.2f", incomeTotal));
+        TreeItem spentTotal = new TreeItem(String.format("Total Spent - %5.2f", receiptTotal));
+        TreeItem totalSaved = new TreeItem(String.format("Total Saved - %5.2f", saved));
         totalInfo.getChildren().add(totalIncome);
         totalInfo.getChildren().add(spentTotal);
         totalInfo.getChildren().add(totalSaved);
@@ -118,7 +112,7 @@ public class MainViewVC {
         }
         for(Transaction tran : trans) {
             String tranCategory = tran.getCategory();
-            TreeItem categoryText = new TreeItem(String.format("%s - %f",
+            TreeItem categoryText = new TreeItem(String.format("%s - %.2f",
                     tran.getDescription(), tran.getAmount()));
             categoryGroupMap.get(tranCategory).getChildren().add(categoryText);
         }
