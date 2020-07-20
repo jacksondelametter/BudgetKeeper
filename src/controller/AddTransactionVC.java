@@ -138,25 +138,17 @@ public class AddTransactionVC {
     }
 
     private void showMessage(String title, String message) throws Exception{
-        Stage messageStage = new Stage();
-        messageStage.setTitle(title);
-        FXMLLoader loader = new FXMLLoader();
-        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/Message.fxml").toURI().toURL();
-        loader.setLocation(url);
-        VBox messageBox = loader.load();
-        messageStage.setScene(new Scene(messageBox));
-        messageStage.sizeToScene();
-        MessageVC messageVC = loader.getController();
-        messageVC.setMessage(message);
+        Stage messageStage =  MessageVC.getMessageStage(title, message);
         messageStage.showAndWait();
     }
+
 
     @FXML
     public void addButtonPressed(Event e) throws Exception{
         String description = enterDescription.getText();
         String amount = enterAmount.getText();
         if (description.equals("") && amount.equals("")) {
-            showMessage("error", "Could not add transaction: description is blankfjsdkla;fjdkla;fjdksl;afdjkasl;fjdksla;");
+            showMessage("Error", "Could not add transaction: description is empty");
             return;
         }
         double amountNum = 0.0;
