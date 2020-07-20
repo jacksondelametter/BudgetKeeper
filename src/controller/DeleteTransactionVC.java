@@ -7,6 +7,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Transaction;
 import service.Database;
 import service.DateConverter;
@@ -55,6 +56,11 @@ public class DeleteTransactionVC {
         selectedCat.fireEvent(new ActionEvent());
     }
 
+    private void showMessage(String title, String message) throws Exception{
+        Stage messageStage =  MessageVC.getMessageStage(title, message);
+        messageStage.showAndWait();
+    }
+
     private void populateTransactionTable(ArrayList<Transaction> trans) {
         transactionTableView.getColumns().clear();
         transactionTableView.getItems().clear();
@@ -75,9 +81,15 @@ public class DeleteTransactionVC {
             TableRow<Transaction> row = new TableRow<>();
             row.setOnMouseClicked(mouseEvent -> {
                 if(mouseEvent.getClickCount() == 2 && !row.isEmpty()) {
+                    // Sets listener for when a transaction gets deleted
                     Transaction tran = row.getItem();
                     Database.deleteTransaction(tran);
                     transactionTableView.getItems().remove(tran);
+                    try {
+                        showMessage("Deleted", "Deleted Transaction");
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
                 }
             });
             return row;
