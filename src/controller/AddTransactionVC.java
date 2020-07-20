@@ -137,42 +137,49 @@ public class AddTransactionVC {
         updateChooseCatChoiceBox();
     }
 
+    private void showMessage(String title, String message) throws Exception{
+        Stage messageStage = new Stage();
+        messageStage.setTitle(title);
+        FXMLLoader loader = new FXMLLoader();
+        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/Message.fxml").toURI().toURL();
+        loader.setLocation(url);
+        VBox messageBox = loader.load();
+        messageStage.setScene(new Scene(messageBox));
+        messageStage.setWidth(200);
+        messageStage.setHeight(200);
+        MessageVC messageVC = loader.getController();
+        messageVC.setMessage(message);
+        messageStage.showAndWait();
+    }
+
     @FXML
     public void addButtonPressed(Event e) throws Exception{
         String description = enterDescription.getText();
         String amount = enterAmount.getText();
         if (description.equals("") && amount.equals("")) {
-            System.out.println("Could not add transaction: description is blank");
+            showMessage("error", "Could not add transaction: description is blank");
             return;
         }
         double amountNum = 0.0;
         try {
             amountNum = Double.parseDouble(amount);
         } catch (Exception error) {
-            System.out.println("Could not add transaction: amount is not a number");
+            showMessage("Error", "Could not add transaction: amount is not a number");
             return;
         }
         Date date = Date.valueOf(datePicker.getValue().toString());
         String category = getCategory();
         if(category != null) {
-            Stage messageStage = new Stage();
-            FXMLLoader loader = new FXMLLoader();
-            URL url = new File("/home/jackson/Documents/BudgetKeeper/view/Message.fxml").toURI().toURL();
-            loader.setLocation(url);
-            VBox messageBox = loader.load();
-            messageStage.setScene(new Scene(messageBox));
-            messageStage.setWidth(300);
-            messageStage.setHeight(300);
-            messageStage.showAndWait();
-            /*String type = getTransactionType();
+            String type = getTransactionType();
             String id = UUID.randomUUID().toString();
             Transaction t = new Transaction(date, type, category, description, amountNum, id);
             Database.addTransaction(t);
+            showMessage("Added", "Added Transaction");
             Stage stage = (Stage) addButton.getScene().getWindow();
-            stage.close();*/
+            stage.close();
         }
         else {
-            System.out.println("Could not add transaction: Error with category name");
+            showMessage("Error", "Could not add transaction: Error with category name");
         }
     }
 

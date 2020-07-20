@@ -4,10 +4,13 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
-<VBox xmlns:fx="main_vbox" fx:controller="controller.MessageVC" alignment="TOP_CENTER">
-    <Text fx:id="messageField"/>
-    <HBox>
-        <Button fx:id="okButton" text="ok"/>
-        <Button fx:id="cancelButton" text="cancel"/>
+<?import javafx.scene.control.ScrollPane?>
+<VBox spacing="20" xmlns:fx="main_vbox" fx:controller="controller.MessageVC" alignment="TOP_CENTER">
+    <ScrollPane>
+        <Text fx:id="messageField"/>
+    </ScrollPane>
+    <HBox alignment="TOP_CENTER">
+        <Button fx:id="okButton" text="ok" onAction="#okClicked"/>
+        <Button fx:id="cancelButton" text="cancel" onAction="#cancelClicked"/>
     </HBox>
 </VBox>
