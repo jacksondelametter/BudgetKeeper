@@ -145,8 +145,7 @@ public class AddTransactionVC {
         loader.setLocation(url);
         VBox messageBox = loader.load();
         messageStage.setScene(new Scene(messageBox));
-        messageStage.setWidth(200);
-        messageStage.setHeight(200);
+        messageStage.sizeToScene();
         MessageVC messageVC = loader.getController();
         messageVC.setMessage(message);
         messageStage.showAndWait();
@@ -157,7 +156,7 @@ public class AddTransactionVC {
         String description = enterDescription.getText();
         String amount = enterAmount.getText();
         if (description.equals("") && amount.equals("")) {
-            showMessage("error", "Could not add transaction: description is blank");
+            showMessage("error", "Could not add transaction: description is blankfjsdkla;fjdkla;fjdksl;afdjkasl;fjdksla;");
             return;
         }
         double amountNum = 0.0;

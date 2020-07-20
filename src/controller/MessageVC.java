@@ -3,15 +3,14 @@ package controller;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class MessageVC {
 
     @FXML
-    public Text messageField;
+    public Label messageField;
 
     @FXML
     public Button okButton;
