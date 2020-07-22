@@ -155,7 +155,7 @@ public class MainViewVC {
     private Scene getScene(String fxml) throws Exception {
         try {
             FXMLLoader loader = new FXMLLoader();
-            URL url = new File("/home/jackson/Documents/BudgetKeeper/view/" + fxml).toURI().toURL();
+            URL url = new File("view/" + fxml).toURI().toURL();
             VBox vbox = loader.load(url);
             return new Scene(vbox);
         } catch (Exception e) {
