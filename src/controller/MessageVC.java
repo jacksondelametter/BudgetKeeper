@@ -28,7 +28,7 @@ public class MessageVC {
         Stage messageStage = new Stage();
         messageStage.setTitle(title);
         FXMLLoader loader = new FXMLLoader();
-        URL url = new File("view/Message.fxml").toURI().toURL();
+        URL url = new File("/home/jackson/Documents/BudgetKeeper/view/Message.fxml").toURI().toURL();
         loader.setLocation(url);
         VBox messageBox = loader.load();
         messageStage.setScene(new Scene(messageBox));
