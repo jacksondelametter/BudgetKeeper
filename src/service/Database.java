@@ -21,18 +21,10 @@ public class Database {
             String transactionStatement = "CREATE TABLE IF NOT EXISTS transactions (date DATE, type STRING, " +
                     "category STRING, description STRING, amount DOUBLE, id NOT NULL PRIMARY KEY);";
             String categoryStatement = "CREATE TABLE IF NOT EXISTS categories (name STRING NOT NULL PRIMARY KEY, type STRING);";
+            String subscriptionStatement = "CREATE TABLE IF NOT EXISTS subscriptions (id STRING NOT NULL PRIMARY KEY);";
             stmt.execute(transactionStatement);
             stmt.execute(categoryStatement);
-
-            String otherCatStatement = "INSERT OR REPLACE INTO categories (name, type) VALUES (?, ?)";
-            PreparedStatement otherCatReceipt = conn.prepareStatement(otherCatStatement);
-            otherCatReceipt.setString(1, "Other Receipt");
-            otherCatReceipt.setString(2, "Receipt");
-            PreparedStatement otherCatIncome = conn.prepareStatement(otherCatStatement);
-            otherCatIncome.setString( 1, "Other Income");
-            otherCatIncome.setString(2, "Income");
-            otherCatReceipt.executeUpdate();
-            otherCatIncome.executeUpdate();
+            stmt.execute(subscriptionStatement);
         } catch (Exception e) {
             System.out.println("Error on database initialization");
             System.out.println(e.toString());

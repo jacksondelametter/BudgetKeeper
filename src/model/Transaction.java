@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.Date;
-import java.util.UUID;
 
 public class Transaction {
 
@@ -12,6 +11,9 @@ public class Transaction {
     private double amount;
     private String id;
 
+    // date = Date this transaction was created
+    // type = Income or receipt
+    // category = category name for the type selected
     public Transaction(Date date, String type, String category, String description, double amount, String id) {
         this.date = date;
         this.type = type;
