@@ -157,7 +157,15 @@ public class Database {
     }
 
     public static void addSubscription(Subscription sub) {
-
+        String addSubStatement = "INSERT INTO subscriptions (id) VALUES (?)";
+        try(Connection conn = connect();
+        PreparedStatement stmt = conn.prepareStatement(addSubStatement)) {
+            stmt.setString(1, sub.getId());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error adding subscription");
+            System.out.println(e.toString());
+        }
     }
 
     public static void deleteTransaction(Transaction tran) {
