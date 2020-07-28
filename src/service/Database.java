@@ -1,6 +1,7 @@
 package service;
 
 import model.Category;
+import model.Subscription;
 import model.Transaction;
 
 import java.sql.*;
@@ -153,6 +154,10 @@ public class Database {
             System.out.println("Error adding transaction");
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void addSubscription(Subscription sub) {
+
     }
 
     public static void deleteTransaction(Transaction tran) {

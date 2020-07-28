@@ -18,6 +18,7 @@
 
         </RadioButton>
     </HBox>
+    <RadioButton text="Subscription" fx:id="subscriptionRadioButton"/>
     <HBox alignment="CENTER">
         <Label text="Choose Date">
             <padding>

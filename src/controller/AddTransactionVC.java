@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Category;
+import model.Subscription;
 import model.Transaction;
 import service.Database;
 
@@ -27,6 +28,9 @@ public class AddTransactionVC {
 
     @FXML
     public RadioButton receiptRadioButton;
+
+    @FXML
+    public RadioButton subscriptionRadioButton;
 
     @FXML
     public DatePicker datePicker;
@@ -165,6 +169,10 @@ public class AddTransactionVC {
             String id = UUID.randomUUID().toString();
             Transaction t = new Transaction(date, type, category, description, amountNum, id);
             Database.addTransaction(t);
+            boolean isSelected = subscriptionRadioButton.isSelected();
+            if(isSelected) {
+                Database.addSubscription(new Subscription(id));
+            }
             showMessage("Added", "Added Transaction");
             Stage stage = (Stage) addButton.getScene().getWindow();
             stage.close();
