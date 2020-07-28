@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Category;
+import model.Subscription;
 import model.Transaction;
 import service.Database;
 import service.DateConverter;
@@ -22,8 +23,10 @@ import java.io.File;
 import java.net.URL;
 import java.sql.Array;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class MainViewVC {
@@ -144,10 +147,23 @@ public class MainViewVC {
         setupInformationText();
     }
 
+    private void updateSubscriptions() {
+        Date date = Date.valueOf(datePicker.getValue());
+        int month = date.getMonth() + 1;    // Months range from 0 to 11
+        ArrayList<Subscription> subs = Database.getSubscriptions();
+        for(Subscription sub : subs) {
+            Transaction tran = Database.getTransactionById(sub.getId());
+            if(tran != null) {
+                System.out.println("Found subscription transaction");
+            }
+        }
+    }
+
     @FXML
     public void initialize() {
         setupDatePicker();
         updateMainView();
+        updateSubscriptions();
     }
 
 

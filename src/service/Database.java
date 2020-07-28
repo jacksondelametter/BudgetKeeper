@@ -137,6 +137,23 @@ public class Database {
         return trans;
     }
 
+    public static Transaction getTransactionById(String id) {
+        String getTranStatement = "SELECT * FROM transactions WHERE id=?;";
+        Transaction tran = null;
+        try(Connection conn = connect();
+        PreparedStatement stmt = conn.prepareStatement(getTranStatement)) {
+            stmt.setString(1, id);
+            ArrayList<Transaction> trans = getQueryTransactions(stmt);
+            if(trans.size() > 0) {
+                tran = trans.get(0);
+            }
+        } catch (Exception e) {
+            System.out.println("Could not get transaction by id");
+            System.out.println(e.toString());
+        }
+        return tran;
+    }
+
     public static void addTransaction(Transaction transaction) {
         String transactionStmt = "INSERT INTO transactions (date, type, category, description, amount, id) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
@@ -157,7 +174,7 @@ public class Database {
     }
 
     public static void addSubscription(Subscription sub) {
-        String addSubStatement = "INSERT INTO subscriptions (id) VALUES (?)";
+        String addSubStatement = "INSERT INTO subscriptions (id) VALUES (?);";
         try(Connection conn = connect();
         PreparedStatement stmt = conn.prepareStatement(addSubStatement)) {
             stmt.setString(1, sub.getId());
@@ -166,6 +183,23 @@ public class Database {
             System.out.println("Error adding subscription");
             System.out.println(e.toString());
         }
+    }
+
+    public static ArrayList<Subscription> getSubscriptions() {
+        String getSubStatement = "SELECT * FROM subscriptions;";
+        ArrayList<Subscription> subs = new ArrayList<>();
+        try(Connection conn = connect();
+        PreparedStatement stmt = conn.prepareStatement(getSubStatement)) {
+            ResultSet results = stmt.executeQuery();
+            while(results.next()) {
+                String id = results.getString(1);
+                subs.add(new Subscription(id));
+            }
+        } catch (Exception e) {
+            System.out.println("Could not get subscriptions");
+            System.out.println(e.toString());
+        }
+        return subs;
     }
 
     public static void deleteTransaction(Transaction tran) {
