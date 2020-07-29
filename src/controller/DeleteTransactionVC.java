@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Subscription;
 import model.Transaction;
 import service.Database;
 import service.DateConverter;
@@ -84,6 +85,7 @@ public class DeleteTransactionVC {
                     // Sets listener for when a transaction gets deleted
                     Transaction tran = row.getItem();
                     Database.deleteTransaction(tran);
+                    Database.deleteSubscriptionWithId(tran.getId());
                     transactionTableView.getItems().remove(tran);
                     try {
                         showMessage("Deleted", "Deleted Transaction");

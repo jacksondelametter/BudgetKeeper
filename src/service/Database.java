@@ -202,6 +202,32 @@ public class Database {
         return subs;
     }
 
+    public static void deleteSubscriptionWithId(String id) {
+        String getSubStatement = "DELETE FROM subscriptions WHERE id=?;";
+        try(Connection conn = connect();
+        PreparedStatement stmt = conn.prepareStatement(getSubStatement)) {
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error deleting subscription by id");
+            System.out.println(e.toString());
+        }
+    }
+
+    public static void updateSubscriptionID(String oldId, String newId) {
+        String updateStatement = "UPDATE subscriptions SET id=? WHERE id=?;";
+        try(Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(updateStatement)) {
+            stmt.setString(1, oldId);
+            stmt.setString(2, newId);
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Error updating subscription with id");
+            System.out.println(e.toString());
+        }
+    }
+
     public static void deleteTransaction(Transaction tran) {
         String deleteStatement = "DELETE FROM transactions WHERE id=?";
         String deleteCatStatement = "DELETE from categories WHERE name=? AND " +

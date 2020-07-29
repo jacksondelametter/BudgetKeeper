@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class MainViewVC {
 
@@ -148,13 +149,22 @@ public class MainViewVC {
     }
 
     private void updateSubscriptions() {
-        Date date = Date.valueOf(datePicker.getValue());
-        int month = date.getMonth() + 1;    // Months range from 0 to 11
+        Date currentDate = Date.valueOf(datePicker.getValue());
+        int currentMonth = currentDate.getMonth() + 2;    // Months range from 0 to 11
         ArrayList<Subscription> subs = Database.getSubscriptions();
         for(Subscription sub : subs) {
             Transaction tran = Database.getTransactionById(sub.getId());
             if(tran != null) {
-                System.out.println("Found subscription transaction");
+                Date tranDate = tran.getDate();
+                int tranMonth = tranDate.getMonth() + 1;    // Months range from 0 to 11
+                if(currentMonth != tranMonth) {
+                    // Latest subscription transaction was not in this month, create a new transaction
+                    String newId = UUID.randomUUID().toString();
+                    Transaction newTran = new Transaction(currentDate, tran.getType(), tran.getCategory(),
+                            tran.getDescription(), tran.getAmount(), newId);
+                    Database.addTransaction(newTran);
+                    Database.updateSubscriptionID(sub.getId(), newId);
+                }
             }
         }
     }
@@ -162,8 +172,8 @@ public class MainViewVC {
     @FXML
     public void initialize() {
         setupDatePicker();
-        updateMainView();
         updateSubscriptions();
+        updateMainView();
     }
 
 
