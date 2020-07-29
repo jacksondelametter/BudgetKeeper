@@ -24,7 +24,10 @@ import java.net.URL;
 import java.sql.Array;
 import java.sql.Date;
 import java.text.DateFormat;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -49,7 +52,10 @@ public class MainViewVC {
     }
 
     private void setupDatePicker() {
-        LocalDate rawDate = LocalDate.now();
+        //LocalDate rawDate = LocalDate.now();
+        String instantExpected = "2020-08-22T10:15:30Z";
+        Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
+        LocalDate rawDate = LocalDate.now(clock);
         datePicker.setValue(rawDate);
     }
 
@@ -150,7 +156,7 @@ public class MainViewVC {
 
     private void updateSubscriptions() {
         Date currentDate = Date.valueOf(datePicker.getValue());
-        int currentMonth = currentDate.getMonth() + 2;    // Months range from 0 to 11
+        int currentMonth = currentDate.getMonth() + 1;    // Months range from 0 to 11
         ArrayList<Subscription> subs = Database.getSubscriptions();
         for(Subscription sub : subs) {
             Transaction tran = Database.getTransactionById(sub.getId());
