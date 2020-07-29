@@ -52,10 +52,10 @@ public class MainViewVC {
     }
 
     private void setupDatePicker() {
-        //LocalDate rawDate = LocalDate.now();
-        String instantExpected = "2020-08-22T10:15:30Z";
+        LocalDate rawDate = LocalDate.now();
+        /*String instantExpected = "2020-08-22T10:15:30Z";
         Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
-        LocalDate rawDate = LocalDate.now(clock);
+        LocalDate rawDate = LocalDate.now(clock);*/
         datePicker.setValue(rawDate);
     }
 

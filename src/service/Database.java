@@ -218,8 +218,8 @@ public class Database {
         String updateStatement = "UPDATE subscriptions SET id=? WHERE id=?;";
         try(Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(updateStatement)) {
-            stmt.setString(1, oldId);
-            stmt.setString(2, newId);
+            stmt.setString(1, newId);
+            stmt.setString(2, oldId);
             stmt.executeUpdate();
 
         } catch (Exception e) {
